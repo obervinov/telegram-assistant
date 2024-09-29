@@ -1,0 +1,31 @@
+[tool.poetry]
+name = "telegram-assistant"
+version = "2.0.0"
+description = "This project is a Telegram bot that helps with everyday tasks, such as keeping track of finances or achieving goals."
+authors = ["Bervinov Oleg <bervinov.ob@gmail.com>"]
+maintainers = ["Bervinov Oleg <bervinov.ob@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/obervinov/telegram-assistant"
+repository = "https://github.com/obervinov/telegram-assistant"
+documentation = "https://github.com/obervinov/telegram-assistant/blob/main/README.md"
+keywords = ["telegram", "bot", "telebot", "telegram-bot", "assistant", "finance", "goals", "tasks", "reminder", "reminder-bot", "reminder-telegram-bot", "finance-telegram-bot", "goals-telegram-bot", "tasks-telegram-bot"]
+include = ["CHANGELOG.md"]
+packages = [{include = "src"}]
+
+[tool.poetry.urls]
+"Bug Tracker" = "https://github.com/obervinov/telegram-assistant/issues"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+psycopg2-binary = "^2"
+mock = "^5"
+prometheus-client = "^0"
+logger = { git = "https://github.com/obervinov/logger-package.git", tag = "v1.0.6" }
+vault  = { git = "https://github.com/obervinov/vault-package.git", tag = "v3.0.0" }
+users = { git = "https://github.com/obervinov/users-package.git", tag = "v3.0.2" }
+telegram = { git = "https://github.com/obervinov/telegram-package.git", tag = "v2.0.1" }
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
