@@ -17,7 +17,7 @@ packages = [{include = "src"}]
 "Bug Tracker" = "https://github.com/obervinov/telegram-assistant/issues"
 
 [tool.poetry.dependencies]
-python = "^3.12"
+python = "^3.10"
 psycopg2-binary = "^2"
 mock = "^5"
 prometheus-client = "^0"
