@@ -302,16 +302,9 @@ def fixture_vault_configuration_data(vault_instance, namespace):
     user_attributes = {
         "status": "allowed",
         "roles": [
-            "get_post_role",
-            "get_posts_list_role",
-            "get_queue_role",
-            "get_history_role"
-        ],
-        "requests": {
-            "requests_per_day": 10,
-            "requests_per_hour": 1,
-            "random_shift_minutes": 15
-        }
+            "finance_role",
+            "goals_role"
+        ]
     }
     user_id = os.getenv("TG_USERID")
     for key, value in user_attributes.items():
@@ -322,15 +315,9 @@ def fixture_vault_configuration_data(vault_instance, namespace):
         )
     bot_configurations = [
         {
-            'path': 'configuration/downloader-api',
+            'path': 'configuration/finances',
             'data': {
-                'enabled': 'false',
-            }
-        },
-        {
-            'path': 'configuration/uploader-api',
-            'data': {
-                'enabled': 'false',
+                'enabled': 'true',
             }
         }
     ]
@@ -434,123 +421,5 @@ def fixture_postgres_users_test_data(postgres_instance):
         cursor.execute(
             "INSERT INTO users (user_id, chat_id, status) VALUES (%s, %s, %s)",
             (user['user_id'], user['chat_id'], user['status'])
-        )
-        conn.commit()
-
-
-@pytest.fixture(name="postgres_queue_test_data", scope='session')
-def fixture_postgres_queue_test_data(postgres_instance):
-    """
-    This function sets up test data in the queue table in the postgres database.
-    """
-    data = [
-        {
-            'user_id': 'test_user_1',
-            'post_id': 'test_post_1',
-            'post_url': 'https://example.com/p/test_post_1',
-            'post_owner': 'test_owner_1',
-            'link_type': 'post',
-            'message_id': 'test_message_1',
-            'chat_id': 'test_chat_1',
-            'scheduled_time': '2024-08-27 00:00:00',
-            'download_status': 'not started',
-            'upload_status': 'not started',
-            'state': 'waiting'
-        },
-        {
-            'user_id': 'test_user_2',
-            'post_id': 'test_post_2',
-            'post_url': 'https://example.com/p/test_post_2',
-            'post_owner': 'test_owner_2',
-            'link_type': 'post',
-            'message_id': 'test_message_2',
-            'chat_id': 'test_chat_2',
-            'scheduled_time': '2024-08-27 00:00:00',
-            'download_status': 'not started',
-            'upload_status': 'not started',
-            'state': 'waiting'
-        },
-        {
-            'user_id': 'test_user_3',
-            'post_id': 'test_post_3',
-            'post_url': 'https://example.com/p/test_post_3',
-            'post_owner': 'test_owner_3',
-            'link_type': 'post',
-            'message_id': 'test_message_3',
-            'chat_id': 'test_chat_3',
-            'scheduled_time': '2024-08-27 00:00:00',
-            'download_status': 'not started',
-            'upload_status': 'not started',
-            'state': 'waiting'
-        }
-    ]
-    conn, cursor = postgres_instance
-    for message in data:
-        cursor.execute(
-            "INSERT INTO queue "
-            "(user_id, post_id, post_url, post_owner, link_type, message_id, chat_id, scheduled_time, download_status, upload_status, state) "
-            "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
-            (
-                message['user_id'], message['post_id'], message['post_url'], message['post_owner'], message['link_type'],
-                message['message_id'], message['chat_id'], message['scheduled_time'], message['download_status'],
-                message['upload_status'], message['state']
-            )
-        )
-        conn.commit()
-
-
-@pytest.fixture(name="postgres_processed_test_data", scope='session')
-def fixture_postgres_processed_test_data(postgres_instance):
-    """
-    This function sets up test data in the processed table in the postgres database.
-    """
-    data = [
-        {
-            'user_id': 'test_user_4',
-            'post_id': 'test_post_4',
-            'post_url': 'https://example.com/p/test_post_4',
-            'post_owner': 'test_owner_4',
-            'link_type': 'post',
-            'message_id': 'test_message_4',
-            'chat_id': 'test_chat_4',
-            'download_status': 'completed',
-            'upload_status': 'completed',
-            'state': 'processed'
-        },
-        {
-            'user_id': 'test_user_5',
-            'post_id': 'test_post_5',
-            'post_url': 'https://example.com/p/test_post_5',
-            'post_owner': 'test_owner_5',
-            'link_type': 'post',
-            'message_id': 'test_message_5',
-            'chat_id': 'test_chat_5',
-            'download_status': 'completed',
-            'upload_status': 'completed',
-            'state': 'processed'
-        },
-        {
-            'user_id': 'test_user_6',
-            'post_id': 'test_post_6',
-            'post_url': 'https://example.com/p/test_post_6',
-            'post_owner': 'test_owner_6',
-            'link_type': 'post',
-            'message_id': 'test_message_6',
-            'chat_id': 'test_chat_6',
-            'download_status': 'completed',
-            'upload_status': 'completed',
-            'state': 'processed'
-        }
-    ]
-    conn, cursor = postgres_instance
-    for message in data:
-        cursor.execute(
-            "INSERT INTO processed (user_id, post_id, post_url, post_owner, link_type, message_id, chat_id, download_status, upload_status, state) "
-            "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
-            (
-                message['user_id'], message['post_id'], message['post_url'], message['post_owner'], message['link_type'],
-                message['message_id'], message['chat_id'], message['download_status'], message['upload_status'],
-                message['state']
-            )
         )
         conn.commit()
