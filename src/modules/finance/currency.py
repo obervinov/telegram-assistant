@@ -154,6 +154,8 @@ class Currency():
                     value = amount / currency.get('rate', 0)
 
         else:
+            from_rate = 0.0
+            to_rate = 0.0
             for currency in currency_cache:
                 if currency.get('code') == from_currency:
                     from_rate = currency.get('rate', 0)

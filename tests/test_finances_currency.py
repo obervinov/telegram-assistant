@@ -1,3 +1,4 @@
+"""Tests for the currency sub module of the finance module."""
 import pytest
 
 

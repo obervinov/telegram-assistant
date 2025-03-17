@@ -5,18 +5,19 @@ import os
 import time
 import json
 import threading
+from wsgiref.simple_server import make_server
+
 import requests
 import pytest
 import hvac
 import psycopg2
 from psycopg2 import sql
+
 # pylint: disable=E0401
 from vault import VaultClient
 from src.modules.database import DatabaseClient
 from src.modules.metrics import Metrics
 from src.modules.finance.currency import Currency
-from wsgiref.simple_server import make_server
-from threading import Thread
 
 
 def pytest_configure(config):
