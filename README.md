@@ -4,7 +4,6 @@
 ![GitHub Release Date](https://img.shields.io/github/release-date/obervinov/telegram-assistent?style=for-the-badge)
 ![GitHub issues](https://img.shields.io/github/issues/obervinov/telegram-assistent?style=for-the-badge)
 ![GitHub repo size](https://img.shields.io/github/repo-size/obervinov/telegram-assistent?style=for-the-badge)
-![PyPI - Python Version](https://img.shields.io/pypi/pyversions/instaloader?style=for-the-badge)
 
 ## <img src="https://github.com/obervinov/content/blob/main/ico/1945958.png" width="25" title="about"> About this project
 This bot helps to fix financial expenses on the basis of which it builds monthly reports.<br></br>
