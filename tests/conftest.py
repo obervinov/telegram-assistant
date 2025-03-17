@@ -4,7 +4,7 @@ This module stores fixtures for performing tests.
 import os
 import time
 import json
-from threading import Thread
+import threading
 from wsgiref.simple_server import make_server
 
 import requests
@@ -403,7 +403,7 @@ def fixture_fake_currency_api():
         return [response_body.encode('utf-8')]
 
     server = make_server('localhost', 8000, simple_app)
-    thread = Thread(target=server.serve_forever)
+    thread = threading.Thread(target=server.serve_forever)
     thread.start()
     yield
     server.shutdown()
