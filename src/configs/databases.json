@@ -48,6 +48,17 @@
                 "timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, ",
                 "rate_limits TIMESTAMP"
             ]
+        },
+        {
+            "name": "finance_currency",
+            "description": "The table stores the currency exchange rates",
+            "columns": [
+                "id SERIAL PRIMARY KEY, ",
+                "code VARCHAR(50) UNIQUE NOT NULL, ",
+                "full_name VARCHAR(255) NOT NULL, ",
+                "rate DECIMAL(10, 2) NOT NULL, ",
+                "last_update TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP"
+            ]
         }
     ]
 }

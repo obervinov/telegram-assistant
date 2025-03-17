@@ -38,3 +38,12 @@ CREATE TABLE messages (
     message_content_hash VARCHAR (64) NOT NULL,
     state VARCHAR (50) NOT NULL DEFAULT 'added'
 );
+
+-- Schema for the currency table
+CREATE TABLE finance_currency (
+    id SERIAL PRIMARY KEY,
+    code VARCHAR(50) UNIQUE NOT NULL,
+    full_name VARCHAR(255) NOT NULL,
+    rate DECIMAL(10, 2) NOT NULL,
+    last_update TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);

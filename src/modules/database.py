@@ -62,11 +62,7 @@ class DatabaseClient:
     Rises:
         psycopg2.Error: An error occurred while interacting with the PostgreSQL database.
     """
-    def __init__(
-        self,
-        vault: object = None,
-        db_role: str = None
-    ) -> None:
+    def __init__(self, vault: object = None, db_role: str = None) -> None:
         """
         Initializes a new instance of the Database client.
 
@@ -196,10 +192,7 @@ class DatabaseClient:
             else:
                 log.error('[Database]: Migrations: the %s is not a valid migration file', migration_file)
 
-    def _is_migration_executed(
-        self,
-        migration_name: str = None
-    ) -> bool:
+    def _is_migration_executed(self, migration_name: str = None) -> bool:
         """
         Check if a migration has already been executed.
 
@@ -211,11 +204,7 @@ class DatabaseClient:
         """
         return self._select(table_name='migrations', columns=('id',), condition=f"name = '{migration_name}'")
 
-    def _mark_migration_as_executed(
-        self,
-        migration_name: str = None,
-        version: str = None
-    ) -> None:
+    def _mark_migration_as_executed(self, migration_name: str = None, version: str = None) -> None:
         """
         Inserts a migration into the migrations table to mark it as executed.
 
@@ -224,11 +213,7 @@ class DatabaseClient:
         """
         self._insert(table_name='migrations', columns=('name', 'version'), values=(migration_name, version))
 
-    def _create_table(
-        self,
-        table_name: str = None,
-        columns: str = None
-    ) -> None:
+    def _create_table(self, table_name: str = None, columns: str = None) -> None:
         """
         Create a new table in the database with the given name and columns if it does not already exist.
 
@@ -247,12 +232,7 @@ class DatabaseClient:
         self.close_connection(conn)
 
     @reconnect_on_exception
-    def _insert(
-        self,
-        table_name: str = None,
-        columns: tuple = None,
-        values: tuple = None
-    ) -> None:
+    def _insert(self, table_name: str = None, columns: tuple = None, values: tuple = None) -> None:
         """
         Inserts a new row into the specified table with the given columns and values.
 
@@ -282,12 +262,7 @@ class DatabaseClient:
             )
 
     @reconnect_on_exception
-    def _select(
-        self,
-        table_name: str = None,
-        columns: tuple = None,
-        **kwargs
-    ) -> Union[list, None]:
+    def _select(self, table_name: str = None, columns: tuple = None, **kwargs) -> Union[list, None]:
         """
         Selects rows from the specified table with the given columns based on the specified condition.
 
@@ -327,12 +302,7 @@ class DatabaseClient:
         return response if response else None
 
     @reconnect_on_exception
-    def _update(
-        self,
-        table_name: str = None,
-        values: str = None,
-        condition: str = None
-    ) -> None:
+    def _update(self, table_name: str = None, values: str = None, condition: str = None) -> None:
         """
         Update the specified table with the given values of values based on the specified condition.
 
@@ -351,11 +321,7 @@ class DatabaseClient:
         self.close_connection(conn)
 
     @reconnect_on_exception
-    def _delete(
-        self,
-        table_name: str = None,
-        condition: str = None
-    ) -> None:
+    def _delete(self, table_name: str = None, condition: str = None) -> None:
         """
         Delete rows from a table based on a condition.
 
@@ -373,13 +339,7 @@ class DatabaseClient:
         conn.commit()
         self.close_connection(conn)
 
-    def keep_message(
-        self,
-        message_id: str = None,
-        chat_id: str = None,
-        message_content: Union[str, dict] = None,
-        **kwargs
-    ) -> str:
+    def keep_message(self, message_id: str = None, chat_id: str = None, message_content: Union[str, dict] = None, **kwargs) -> str:
         """
         Add a message to the messages table in the database.
         It is used to store the last message sent to the user for updating the message in the future.
@@ -453,10 +413,7 @@ class DatabaseClient:
 
         return response
 
-    def get_users(
-        self,
-        only_allowed: bool = True
-    ) -> dict:
+    def get_users(self, only_allowed: bool = True) -> dict:
         """
         This method will be deprecated after https://github.com/obervinov/users-package/issues/44 (users-package:v3.1.0).
         Get a dictionary of all users with their metadata from the users table in the database.
@@ -492,11 +449,7 @@ class DatabaseClient:
                 users_dict.append({'user_id': user[0], 'chat_id': user[1], 'status': user[2]})
         return users_dict
 
-    def get_considered_message(
-        self,
-        message_type: str = None,
-        chat_id: str = None
-    ) -> tuple:
+    def get_considered_message(self, message_type: str = None, chat_id: str = None) -> tuple:
         """
         Get a message with specified type and chat ID from the messages table in the database.
 
@@ -519,3 +472,52 @@ class DatabaseClient:
             limit=1
         )
         return message[0] if message else None
+
+    def get_currencies(self) -> dict:
+        """
+        Get the all currencies from the database.
+
+        Returns:
+            dict: A dictionary containing the currencies.
+
+        Examples:
+            >>> get_currencies()
+            [{'code': 'USD', 'full_name': 'United States Dollar', 'rate': 1.0, 'last_update': datetime.datetime}]
+        """
+        currencies = []
+        response = self._select(table_name='currencies', columns=('code', 'full_name', 'rate', 'last_update'))
+        for currency in response:
+            currencies.append({'code': currency[0], 'full_name': currency[1], 'rate': currency[2], 'last_update': currency[3]})
+        return currencies
+
+    def update_currency_list(self, data: dict = None) -> None:
+        """
+        Update the currency list in the database (code and full name).
+
+        Args:
+            data (dict): A dictionary containing the currency codes and full names.
+
+        Examples:
+            >>> update_currency(data={'USD': 'United States Dollar', 'EUR': 'Euro'})
+        """
+        exist_list = self.get_currencies()
+        for key, value in data.items():
+            if key not in [currency['code'] for currency in exist_list]:
+                self._insert(
+                    table_name='currencies',
+                    columns=('code', 'full_name'),
+                    values=(key, value)
+                )
+
+    def update_currency_rate(self, data: dict = None) -> None:
+        """
+        Update the currency rate in the database.
+
+        Args:
+            data (dict): A dictionary containing the currency codes and rates.
+
+        Examples:
+            >>> update_currency_rate(data={'USD': 1.0, 'EUR': 0.85})
+        """
+        for key, value in data.items():
+            self._update(table_name='currencies', values=f"rate={value}", condition=f"code='{key}'")

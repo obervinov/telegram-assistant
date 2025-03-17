@@ -171,3 +171,12 @@ export BOT_NAME="telegram-assistent"
 docker build -t ghcr.io/${GITHUB_USERNAME}/${BOT_NAME}:${BOT_VERSION} . --build-arg BOT_NAME=${BOT_NAME}
 docker push ghcr.io/${GITHUB_USERNAME}/${BOT_NAME}:${BOT_VERSION}
 ```
+
+
+
+
+
+
+
+
+EXCHANGE_API https://exchangeratesapi.io/#pricing_plan or https://openexchangerates.org

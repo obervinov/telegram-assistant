@@ -17,14 +17,14 @@ packages = [{include = "src"}]
 "Bug Tracker" = "https://github.com/obervinov/telegram-assistant/issues"
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.12"
 psycopg2-binary = "^2"
 mock = "^5"
 prometheus-client = "^0"
-logger = { git = "https://github.com/obervinov/logger-package.git", tag = "v1.0.6" }
-vault  = { git = "https://github.com/obervinov/vault-package.git", tag = "v3.0.0" }
-users = { git = "https://github.com/obervinov/users-package.git", tag = "v3.0.2" }
-telegram = { git = "https://github.com/obervinov/telegram-package.git", tag = "v2.0.1" }
+logger = { git = "https://github.com/obervinov/logger-package.git", tag = "v2.0.0" }
+vault  = { git = "https://github.com/obervinov/vault-package.git", tag = "v4.0.1" }
+users = { git = "https://github.com/obervinov/users-package.git", branch = "v4.1.1" }
+telegram = { git = "https://github.com/obervinov/telegram-package.git", tag = "v3.0.1" }
 
 [build-system]
 requires = ["poetry-core"]
