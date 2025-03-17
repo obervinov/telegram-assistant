@@ -1,5 +1,8 @@
-"""
-This is just a special file that tells pip that your main module is in this folder
-No need to add anything here. Feel free to delete this line when you make your own package
-Leave it empty
-"""
+"""This module contains the features for the finance module"""
+from .currency import Currency
+from .exceptions import FailedExchangeAPIRequest
+
+__all__ = [
+    'Currency',
+    'FailedExchangeAPIRequest'
+]

@@ -180,3 +180,4 @@ docker push ghcr.io/${GITHUB_USERNAME}/${BOT_NAME}:${BOT_VERSION}
 
 
 EXCHANGE_API https://exchangeratesapi.io/#pricing_plan or https://openexchangerates.org
+MORE DOCUMENTATION

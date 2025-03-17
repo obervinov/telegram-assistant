@@ -5,7 +5,7 @@ import requests
 import pytest
 
 
-@pytest.mark.order(13)
+@pytest.mark.order(0)
 def test_metrics_instance(metrics_class, database_class):
     """
     Checking the creation of a metrics instance.
@@ -20,7 +20,7 @@ def test_metrics_instance(metrics_class, database_class):
     assert metrics_class.queue_length_gauge is not None
 
 
-@pytest.mark.order(14)
+@pytest.mark.order(1)
 def test_metrics_users_stats(metrics_class, postgres_users_test_data):
     """
     Checking the collection of user statistics.
@@ -34,7 +34,7 @@ def test_metrics_users_stats(metrics_class, postgres_users_test_data):
     assert "pytest_access_denied_total 1.0" in response.text
 
 
-@pytest.mark.order(15)
+@pytest.mark.order(2)
 def test_metrics_threads_status(metrics_class):
     """
     Checking the collection of thread statistics.
@@ -44,7 +44,7 @@ def test_metrics_threads_status(metrics_class):
     assert 'pytest_thread_status{thread_name="MainThread"} 1.0' in response.text
 
 
-@pytest.mark.order(16)
+@pytest.mark.order(3)
 def test_metrics_messages(metrics_class, postgres_queue_test_data, postgres_processed_test_data):
     """
     Checking the collection of processed and queued messages statistics.

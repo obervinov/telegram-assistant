@@ -3,6 +3,7 @@ This module stores fixtures for performing tests.
 """
 import os
 import time
+import json
 import threading
 import requests
 import pytest
@@ -13,6 +14,9 @@ from psycopg2 import sql
 from vault import VaultClient
 from src.modules.database import DatabaseClient
 from src.modules.metrics import Metrics
+from src.modules.finance.currency import Currency
+from wsgiref.simple_server import make_server
+from threading import Thread
 
 
 def pytest_configure(config):
@@ -213,7 +217,7 @@ def fixture_prepare_vault(vault_url, namespace, policy_path, postgres_url, postg
     # Prepare database engine configuration
     client.sys.enable_secrets_engine(
         backend_type='database',
-        path='database'
+        path='pytest-database'
     )
 
     # Configure database engine
@@ -224,7 +228,8 @@ def fixture_prepare_vault(vault_url, namespace, policy_path, postgres_url, postg
         allowed_roles=["pytest"],
         username="postgres",
         password="postgres",
-        connection_url=postgres_url
+        connection_url=postgres_url,
+        mount_point="pytest-database"
     )
     print(f"Configured database engine: {configuration}")
 
@@ -240,7 +245,8 @@ def fixture_prepare_vault(vault_url, namespace, policy_path, postgres_url, postg
         db_name="postgresql",
         creation_statements=statement,
         default_ttl="1h",
-        max_ttl="24h"
+        max_ttl="24h",
+        mount_point="pytest-database"
     )
     print(f"Created role: {role}")
 
@@ -302,8 +308,8 @@ def fixture_vault_configuration_data(vault_instance, namespace):
     user_attributes = {
         "status": "allowed",
         "roles": [
-            "finance_role",
-            "goals_role"
+            "finances",
+            "goals"
         ]
     }
     user_id = os.getenv("TG_USERID")
@@ -313,21 +319,6 @@ def fixture_vault_configuration_data(vault_instance, namespace):
             key=key,
             value=value
         )
-    bot_configurations = [
-        {
-            'path': 'configuration/finances',
-            'data': {
-                'enabled': 'true',
-            }
-        }
-    ]
-    for configuration in bot_configurations:
-        for key, value in configuration['data'].items():
-            _ = vault_instance.kv2engine.write_secret(
-                path=configuration['path'],
-                key=key,
-                value=value
-            )
 
 
 @pytest.fixture(name="database_class", scope='session')
@@ -376,50 +367,52 @@ def fixture_postgres_messages_test_data(postgres_instance):
     conn.commit()
 
 
-@pytest.fixture(name="postgres_users_test_data", scope='session')
-def fixture_postgres_users_test_data(postgres_instance):
+@pytest.fixture(name="fake_currency_api", scope='module')
+def fixture_fake_currency_api():
     """
-    This function sets up test data in the users table in the postgres database.
+    This function sets up a fake currency API server.
+    """
+    def simple_app(environ, start_response):
+        path = environ.get('PATH_INFO', '')
+        if path == '/currencies.json':
+            response_body = json.dumps({
+                "USD": "United States Dollar",
+                "EUR": "Euro",
+                "GBP": "British Pound Sterling"
+            })
+        elif path == '/latest.json':
+            response_body = json.dumps({
+                "base": "USD",
+                "rates": {
+                    "USD": 1.0,
+                    "EUR": 0.85,
+                    "GBP": 0.75
+                }
+            })
+        else:
+            response_body = json.dumps({"error": "Not found"})
+            status = '404 Not Found'
+            headers = [('Content-type', 'application/json')]
+            start_response(status, headers)
+            return [response_body.encode('utf-8')]
 
-    Args:
-        postgres_instance: A tuple containing the connection and cursor objects for the postgres database.
+        status = '200 OK'
+        headers = [('Content-type', 'application/json')]
+        start_response(status, headers)
+        return [response_body.encode('utf-8')]
+
+    server = make_server('localhost', 8000, simple_app)
+    thread = Thread(target=server.serve_forever)
+    thread.start()
+    yield
+    server.shutdown()
+    thread.join()
+
+
+@pytest.fixture(name="currency_instance", scope='session')
+def fixture_currency_instance(database_class, fake_currency_api):
     """
-    data = [
-        {
-            'user_id': 'test_user_1',
-            'chat_id': 'test_chat_1',
-            'status': 'allowed'
-        },
-        {
-            'user_id': 'test_user_2',
-            'chat_id': 'test_chat_2',
-            'status': 'denied'
-        },
-        {
-            'user_id': 'test_user_3',
-            'chat_id': 'test_chat_3',
-            'status': 'allowed'
-        },
-        {
-            'user_id': 'test_user_4',
-            'chat_id': 'test_chat_4',
-            'status': 'allowed'
-        },
-        {
-            'user_id': 'test_user_5',
-            'chat_id': 'test_chat_5',
-            'status': 'allowed'
-        },
-        {
-            'user_id': 'test_user_6',
-            'chat_id': 'test_chat_6',
-            'status': 'allowed'
-        },
-    ]
-    conn, cursor = postgres_instance
-    for user in data:
-        cursor.execute(
-            "INSERT INTO users (user_id, chat_id, status) VALUES (%s, %s, %s)",
-            (user['user_id'], user['chat_id'], user['status'])
-        )
-        conn.commit()
+    Returns the currency class
+    """
+    _ = fake_currency_api
+    return Currency(app_id='test_app_id', database=database_class, api_url='http://localhost:8000')
