@@ -1,0 +1,76 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.6 Safari/605.1.15" version="24.7.17">
+  <diagram name="Страница — 1" id="Pbfn2bIGFVLPJ5PaaZfj">
+    <mxGraphModel dx="1088" dy="631" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="VATfklufI-v2t7JEDGxb-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="VATfklufI-v2t7JEDGxb-1" target="VATfklufI-v2t7JEDGxb-11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="VATfklufI-v2t7JEDGxb-1" value="Finances&lt;div&gt;button&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="280" y="120" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="VATfklufI-v2t7JEDGxb-3" value="Add Category&lt;div&gt;button&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="500" y="440" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="VATfklufI-v2t7JEDGxb-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="VATfklufI-v2t7JEDGxb-4" target="VATfklufI-v2t7JEDGxb-22">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="420" y="550" />
+              <mxPoint x="120" y="550" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="VATfklufI-v2t7JEDGxb-4" value="Settings Area&lt;div&gt;button&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="360" y="440" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="VATfklufI-v2t7JEDGxb-5" value="Add Report&lt;div&gt;button&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="640" y="440" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="VATfklufI-v2t7JEDGxb-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="VATfklufI-v2t7JEDGxb-11" target="VATfklufI-v2t7JEDGxb-22">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="VATfklufI-v2t7JEDGxb-24" value="&lt;b&gt;False&lt;/b&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="VATfklufI-v2t7JEDGxb-23">
+          <mxGeometry x="-0.5115" y="-1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="VATfklufI-v2t7JEDGxb-26" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="VATfklufI-v2t7JEDGxb-11" target="VATfklufI-v2t7JEDGxb-4">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="440" y="330.0000000000001" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="560" y="310" />
+              <mxPoint x="560" y="415" />
+              <mxPoint x="420" y="415" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="VATfklufI-v2t7JEDGxb-27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="VATfklufI-v2t7JEDGxb-11" target="VATfklufI-v2t7JEDGxb-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="VATfklufI-v2t7JEDGxb-28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="VATfklufI-v2t7JEDGxb-11">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="415" y="315" as="sourcePoint" />
+            <mxPoint x="700" y="445" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="560" y="310" />
+              <mxPoint x="560" y="415" />
+              <mxPoint x="700" y="415" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="VATfklufI-v2t7JEDGxb-29" value="True" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="VATfklufI-v2t7JEDGxb-28">
+          <mxGeometry x="-0.6905" y="-1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="VATfklufI-v2t7JEDGxb-11" value="If &lt;b&gt;settings&lt;/b&gt; for area&lt;div&gt;exist&lt;/div&gt;" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="265" y="230" width="150" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="VATfklufI-v2t7JEDGxb-22" value="Set settings for area function" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;" vertex="1" parent="1">
+          <mxGeometry x="60" y="440" width="120" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
