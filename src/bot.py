@@ -67,15 +67,15 @@ def bot_callback_query_handler(call: tg.callback_query = None) -> None:
     """
     log.info('[Bot]: Processing button %s for user %s...', call.data, call.message.chat.id)
 
-    if call.data == "Finances":
-        help_message = tg.send_styled_message(
-            chat_id=call.message.chat.id,
-            messages_template={'alias': 'help_for_finances'}
-        )
-        bot.register_next_step_handler(call.message, finances_entrypoint, help_message)
+    # if call.data == "Finances":
+    #     help_message = tg.send_styled_message(
+    #         chat_id=call.message.chat.id,
+    #         messages_template={'alias': 'help_for_finances'}
+    #     )
+    #     bot.register_next_step_handler(call.message, finances_entrypoint, help_message)
 
-    else:
-        log.error('[Bot]: Handler for button %s not found', call.data)
+    # else:
+    #     log.error('[Bot]: Handler for button %s not found', call.data)
 
 
 # Handler for incorrect flow (UNKNOWN INPUT)
