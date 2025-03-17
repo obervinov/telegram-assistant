@@ -4,7 +4,7 @@ This module stores fixtures for performing tests.
 import os
 import time
 import json
-import threading
+from threading import Thread
 from wsgiref.simple_server import make_server
 
 import requests
