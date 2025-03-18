@@ -485,13 +485,13 @@ class DatabaseClient:
 
         Examples:
             >>> get_currencies()
-            [{'code': 'USD', 'full_name': 'United States Dollar', 'rate': 1.0, 'last_update': datetime.datetime}]
+            [{'code': 'USD', 'name': 'United States Dollar', 'rate': 1.0, 'last_update': datetime.datetime}]
         """
         currencies = []
-        response = self._select(table_name='finance_currency', columns=('code', 'full_name', 'rate', 'last_update'))
+        response = self._select(table_name='finance_currency', columns=('code', 'name', 'rate', 'last_update'))
         if response:
             for currency in response:
-                currencies.append({'code': currency[0], 'full_name': currency[1], 'rate': currency[2], 'last_update': currency[3]})
+                currencies.append({'code': currency[0], 'name': currency[1], 'rate': currency[2], 'last_update': currency[3]})
         return currencies
 
     def update_currency_list(self, data: dict = None) -> None:
@@ -509,7 +509,7 @@ class DatabaseClient:
             if key not in [currency['code'] for currency in exist_list]:
                 self._insert(
                     table_name='finance_currency',
-                    columns=('code', 'full_name'),
+                    columns=('code', 'name'),
                     values=(key, value)
                 )
 

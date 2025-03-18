@@ -55,7 +55,7 @@
             "columns": [
                 "id SERIAL PRIMARY KEY, ",
                 "code VARCHAR(50) UNIQUE NOT NULL, ",
-                "full_name VARCHAR(255) NOT NULL, ",
+                "name VARCHAR(255) NOT NULL, ",
                 "rate DECIMAL(10, 2) NOT NULL DEFAULT 0.00, ",
                 "last_update TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP"
             ]

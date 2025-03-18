@@ -101,7 +101,7 @@ class Currency():
 
         Examples:
             >>> get_currencies()
-            [{'code': 'USD', 'full_name': 'United States Dollar', 'rate': 1.0, 'last_update': datetime.datetime}]
+            [{'code': 'USD', 'name': 'United States Dollar', 'rate': 1.0, 'last_update': datetime.datetime}]
         """
         log.info('[Currency]: Getting currencies from the database...')
         return self.database.get_currencies()
