@@ -41,7 +41,7 @@ class Currency():
         Initialize the class with the necessary parameters.
 
         Args:
-            :param app_id (str): the APP ID for the Open Exchange Rates API (https://docs.openexchangerates.org/reference/authentication)            
+            :param app_id (str): the APP ID for the Open Exchange Rates API (https://docs.openexchangerates.org/reference/authentication)
             :param database (Database): instance of the Database class.
 
         Keyword Args:
