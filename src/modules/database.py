@@ -488,7 +488,7 @@ class DatabaseClient:
             [{'code': 'USD', 'full_name': 'United States Dollar', 'rate': 1.0, 'last_update': datetime.datetime}]
         """
         currencies = []
-        response = self._select(table_name='currencies', columns=('code', 'full_name', 'rate', 'last_update'))
+        response = self._select(table_name='finance_currency', columns=('code', 'full_name', 'rate', 'last_update'))
         for currency in response:
             currencies.append({'code': currency[0], 'full_name': currency[1], 'rate': currency[2], 'last_update': currency[3]})
         return currencies
@@ -507,7 +507,7 @@ class DatabaseClient:
         for key, value in data.items():
             if key not in [currency['code'] for currency in exist_list]:
                 self._insert(
-                    table_name='currencies',
+                    table_name='finance_currency',
                     columns=('code', 'full_name'),
                     values=(key, value)
                 )
@@ -523,4 +523,4 @@ class DatabaseClient:
             >>> update_currency_rate(data={'USD': 1.0, 'EUR': 0.85})
         """
         for key, value in data.items():
-            self._update(table_name='currencies', values=f"rate={value}", condition=f"code='{key}'")
+            self._update(table_name='finance_currency', values=f"rate={value}", condition=f"code='{key}'")
