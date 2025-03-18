@@ -9,7 +9,8 @@ def test_get_currencies_from_database(currency_instance):
     Checking the method for getting currencies from the exchange API.
     """
     data = []
-    for item in currency_instance.update_currencies_cache():
+    currency_instance.update_currencies_cache()
+    for item in currency_instance.get_currencies():
         item.pop('last_update')
         data.append(item)
     assert data == [
