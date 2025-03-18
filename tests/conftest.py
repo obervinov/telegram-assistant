@@ -378,7 +378,7 @@ def fixture_fake_currency_api():
                 "EUR": "Euro",
                 "GBP": "British Pound Sterling"
             })
-        elif path == '/latest.json?app_id=test_app_id&base=USD&prettyprint=false&show_alternative=false':
+        elif path == '/latest.json':
             response_body = json.dumps({
                 "base": "USD",
                 "rates": {
