@@ -174,23 +174,26 @@ class DatabaseClient:
         # Migrations directory
         migrations_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../migrations'))
         sys.path.append(migrations_dir)
-        migration_files = [f for f in os.listdir(migrations_dir) if f.endswith('.py')]
-        migration_files.sort()
+        try:
+            migration_files = [f for f in os.listdir(migrations_dir) if f.endswith('.py')]
+            migration_files.sort()
 
-        for migration_file in migration_files:
-            if migration_file.endswith('.py'):
-                migration_module_name = migration_file[:-3]
+            for migration_file in migration_files:
+                if migration_file.endswith('.py'):
+                    migration_module_name = migration_file[:-3]
 
-                if not self._is_migration_executed(migration_name=migration_module_name):
-                    log.info('[Database]: Migrations: executing the %s migration...', migration_module_name)
-                    migration_module = importlib.import_module(name=migration_module_name)
-                    migration_module.execute(self)
-                    version = getattr(migration_module, 'VERSION', migration_module_name)
-                    self._mark_migration_as_executed(migration_name=migration_module_name, version=version)
+                    if not self._is_migration_executed(migration_name=migration_module_name):
+                        log.info('[Database]: Migrations: executing the %s migration...', migration_module_name)
+                        migration_module = importlib.import_module(name=migration_module_name)
+                        migration_module.execute(self)
+                        version = getattr(migration_module, 'VERSION', migration_module_name)
+                        self._mark_migration_as_executed(migration_name=migration_module_name, version=version)
+                    else:
+                        log.info('[Database] Migrations: the %s has already been executed and was skipped', migration_module_name)
                 else:
-                    log.info('[Database] Migrations: the %s has already been executed and was skipped', migration_module_name)
-            else:
-                log.error('[Database]: Migrations: the %s is not a valid migration file', migration_file)
+                    log.error('[Database]: Migrations: the %s is not a valid migration file', migration_file)
+        except FileNotFoundError as does_not_exist:
+            log.info('[Database]: Migrations: no migration files found in the directory: %s', does_not_exist)
 
     def _is_migration_executed(self, migration_name: str = None) -> bool:
         """
