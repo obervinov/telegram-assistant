@@ -1,6 +1,6 @@
 """Tests for the currency sub module of the finance module."""
-import pytest
 import re
+import pytest
 
 
 @pytest.mark.order(5)
