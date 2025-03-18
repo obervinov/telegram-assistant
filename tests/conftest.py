@@ -335,13 +335,10 @@ def fixture_database_class(vault_instance, namespace, vault_configuration_data):
 
 
 @pytest.fixture(name="metrics_class", scope='session')
-def fixture_metrics_class(database_class, postgres_users_test_data, postgres_queue_test_data):
+def fixture_metrics_class(database_class):
     """
     Returns the metrics class
     """
-    _ = postgres_users_test_data
-    _ = postgres_queue_test_data
-
     metrics = Metrics(port=8000, interval=5, metrics_prefix='pytest', database=database_class)
     threads_list = threading.enumerate()
     metrics_thread = threading.Thread(target=metrics.run, args=(threads_list,))
