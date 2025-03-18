@@ -119,7 +119,7 @@ class Currency():
         log.info('[Currency]: Updating the currencies list in the database...')
         self.database.update_currency_list(data=currencies)
         log.info('[Currency]: Updating the exchange rates in the database...')
-        self.database.update_exchange_rates(data=currencies_rate['rates'])
+        self.database.update_currency_rate(data=currencies_rate['rates'])
 
     def currency_converter(self, from_currency: str, amount: float, to_currency: str) -> float:
         """
