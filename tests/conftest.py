@@ -372,13 +372,13 @@ def fixture_fake_currency_api():
     """
     def simple_app(environ, start_response):
         path = environ.get('PATH_INFO', '')
-        if path == '/currencies.json':
+        if path == '/currencies.json&app_id=test_app_id':
             response_body = json.dumps({
                 "USD": "United States Dollar",
                 "EUR": "Euro",
                 "GBP": "British Pound Sterling"
             })
-        elif path == '/latest.json':
+        elif path == '/latest.json?app_id=test_app_id&base=USD&prettyprint=false&show_alternative=false':
             response_body = json.dumps({
                 "base": "USD",
                 "rates": {
@@ -388,7 +388,7 @@ def fixture_fake_currency_api():
                 }
             })
         else:
-            response_body = json.dumps({"error": "Not found"})
+            response_body = json.dumps({"error": f"Path {path} not found"})
             status = '404 Not Found'
             headers = [('Content-type', 'application/json')]
             start_response(status, headers)
