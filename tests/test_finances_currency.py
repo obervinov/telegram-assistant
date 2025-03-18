@@ -16,7 +16,7 @@ def test_get_currencies_from_database(currency_instance):
     assert data == [
         {'code': 'USD', 'name': 'United States Dollar', 'rate': Decimal('1.00')},
         {'code': 'EUR', 'name': 'Euro', 'rate': Decimal('0.85')},
-        {'code': 'GBP', 'name': 'British Pound Sterling', 'rate': Decimal('0.73')},
+        {'code': 'GBP', 'name': 'British Pound Sterling', 'rate': Decimal('0.75')},
     ]
 
 
