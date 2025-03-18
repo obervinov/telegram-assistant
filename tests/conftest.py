@@ -365,7 +365,7 @@ def fixture_postgres_messages_test_data(postgres_instance):
     conn.commit()
 
 
-@pytest.fixture(name="fake_currency_api", scope='module')
+@pytest.fixture(name="fake_currency_api", scope='session')
 def fixture_fake_currency_api():
     """
     This function sets up a fake currency API server.
