@@ -489,8 +489,9 @@ class DatabaseClient:
         """
         currencies = []
         response = self._select(table_name='finance_currency', columns=('code', 'full_name', 'rate', 'last_update'))
-        for currency in response:
-            currencies.append({'code': currency[0], 'full_name': currency[1], 'rate': currency[2], 'last_update': currency[3]})
+        if response:
+            for currency in response:
+                currencies.append({'code': currency[0], 'full_name': currency[1], 'rate': currency[2], 'last_update': currency[3]})
         return currencies
 
     def update_currency_list(self, data: dict = None) -> None:
