@@ -399,7 +399,7 @@ def fixture_fake_currency_api():
         start_response(status, headers)
         return [response_body.encode('utf-8')]
 
-    server = make_server('localhost', 8000, simple_app)
+    server = make_server('localhost', 8080, simple_app)
     thread = threading.Thread(target=server.serve_forever)
     thread.start()
     yield
@@ -413,4 +413,4 @@ def fixture_currency_instance(database_class, fake_currency_api):
     Returns the currency class
     """
     _ = fake_currency_api
-    return Currency(app_id='test_app_id', database=database_class, api_url='http://localhost:8000')
+    return Currency(app_id='test_app_id', database=database_class, api_url='http://localhost:8080')
