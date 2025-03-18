@@ -323,13 +323,14 @@ def fixture_vault_configuration_data(vault_instance, namespace):
 
 
 @pytest.fixture(name="database_class", scope='session')
-def fixture_database_class(vault_instance, namespace):
+def fixture_database_class(vault_instance, namespace, vault_configuration_data):
     """
     Returns the database class
 
     Returns:
         object: The database class.
     """
+    _ = vault_configuration_data
     return DatabaseClient(vault=vault_instance, db_role=namespace)
 
 
