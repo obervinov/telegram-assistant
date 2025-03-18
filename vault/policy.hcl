@@ -14,21 +14,21 @@ path "auth/token/lookup-self" {
 }
 
 # Allowed to connect a mount point and update settings
-path "telegram-assistant/config" {
+path telegram-assistant/config" {
   capabilities = ["update"]
 }
 
 # Allowed to list bot configurations
-path "telegram-assistant/configuration/*" {
+path telegram-assistant/configuration/*" {
   capabilities = ["read", "list"]
 }
 
 # Allowed to read other configurations
-path "telegram-assistant/data/configuration/*" {
+path telegram-assistant/data/configuration/*" {
   capabilities = ["read", "list"]
 }
 
 # Allowed to read and generate credentials in database engine
-path "telegram-assistant-database/creds/*" {
+path telegram-assistant-database/creds/*" {
   capabilities = ["read", "list", "update"]
 }

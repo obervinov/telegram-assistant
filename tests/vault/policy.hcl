@@ -25,7 +25,7 @@ path "sys/mounts/pytest" {
 
 # Operations for pytest
 # Allow reading database credentials for a role 
-path "database/creds/pytest" {
+path "pytest-database/creds/pytest" {
   capabilities = ["read"]
 }
 
@@ -55,22 +55,6 @@ path "telegram-assistant/config" {
 # Work with secret application data
 path "telegram-assistant/data/configuration/*" {
   capabilities = ["create", "read", "update", "list"]
-}
-
-# Operations for the module
-# Work with secret event data
-path "telegram-assistant/data/data/*" {
-  capabilities = ["create", "read", "update", "list"]
-}
-
-# Allowed to read bot history
-path "telegram-assistant/metadata/history/*" {
-  capabilities = ["read", "list"]
-}
-
-# Allowed to create, read, update, and list bot history
-path "telegram-assistant/data/history/*" {
-  capabilities = ["create", "read", "list", "update"]
 }
 
 # Allowed to read and list of user configurations
