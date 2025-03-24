@@ -43,17 +43,17 @@ class Income:
 
         for field in required_fields:
             if field not in kwargs:
-                log.error(f'[Finance.Income] The field {field} is required for the income.')
+                log.error('[Finance.Income] The field %s is required for the income.', field)
                 return False
 
         if not ('Salary' or 'Deposit' or 'CoinBox') in kwargs.get('category'):
-            log.error(f'[Finance.Income] The model {kwargs.get("category")} is not supported.')
+            log.error('[Finance.Income] The category %s is not supported for the income.', kwargs.get('category'))
             return False
 
         if kwargs.get('category') == 'Deposit':
             for field in deposit_required_payload_fields:
                 if field not in kwargs:
-                    log.error(f'[Finance.Income] The field {field} is required for the deposit model.')
+                    log.error('[Finance.Income] The field %s is required for the income.', field)
                     return False
 
         return True
@@ -69,7 +69,7 @@ class Income:
             bool: True if the income exists, False otherwise.
         """
         if self.database.get_income(name=name):
-            log.error(f'[Finance.Income] The income with name {name} already exists in the database.')
+            log.error('[Finance.Income] The income with name %s already exists in the database.', name)
             return True
         return False
 
@@ -105,14 +105,14 @@ class Income:
         """
         if self._check_model(name=name, **payload):
             if not self._check_income_exists(name=name):
-                log.info(f'[Finance.Income] Adding the new income with name {name} to the database...')
+                log.info('[Finance.Income] Adding the income with name %s to the database...', name)
                 income_dict = {
                     'name': name, 'description': payload.get('description'), 'category': payload.get('category'), 'currency': payload.get('currency'),
                     'amount': payload.get('amount'), 'extra_data': payload.get('extra_data', None)
                 }
                 self.database.add_finance_income(**income_dict)
             else:
-                log.info(f'[Finance.Income] Updating the income with name {self.name} in the database...')
+                log.info('[Finance.Income] Updating the income with name %s in the database...', name)
                 self.database.update_income(name=self.name, model=self.model, data=self.data)
 
     # def watcher(self) -> None:
