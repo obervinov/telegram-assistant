@@ -500,7 +500,7 @@ class DatabaseClient:
 
         Args (one of the two arguments must be provided)
             currency_list (dict): A dictionary containing the currency codes and names.
-            currency_rate (dict): A dictionary containing the currency codes and rates. 
+            currency_rate (dict): A dictionary containing the currency codes and rates.
 
         Examples:
             >>> update_finance_currency(currency_list={'USD': 'United States Dollar', 'EUR': 'Euro'})
