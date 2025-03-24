@@ -115,10 +115,10 @@ class Income:
                 log.info('[Finance.Income] Updating the income with name %s in the database...', name)
                 self.database.update_income(name=self.name, model=self.model, data=self.data)
 
-    # def watcher(self) -> None:
-    #     """
-    #     Method for running the income background task as a separate thread.
-    #     """
-    #     log.info('[Finance.Income]: Running the watcher for the background task...')
-    #     while True:
-    #         pass
+    def watcher(self) -> None:
+        """
+        Method for running the income background task as a separate thread.
+        """
+        log.info('[Finance.Income]: Running the watcher for the background task...')
+        while True:
+            pass
