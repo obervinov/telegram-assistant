@@ -59,6 +59,36 @@
                 "rate DECIMAL(10, 2) NOT NULL DEFAULT 0.00, ",
                 "last_update TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP"
             ]
+        },
+        {
+            "name": "finance_settings",
+            "description": "The table stores the settings for the finance module per each user",
+            "columns": [
+                "id SERIAL PRIMARY KEY, ",
+                "user_id VARCHAR(255) NOT NULL, ",
+                "base_currency VARCHAR(50) NOT NULL DEFAULT 'USD', ",
+                "additional_currencies VARCHAR(255) NOT NULL, ",
+                "language VARCHAR(50) NOT NULL DEFAULT 'en', ",
+                "timezone VARCHAR(50) NOT NULL DEFAULT 'UTC', ",
+                "created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, ",
+                "updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP"
+            ]
+        },
+        {
+            "name": "finance_income",
+            "description": "The table stores the incomes for the finance module per each user",
+            "columns": [
+                "id SERIAL PRIMARY KEY, ",
+                "user_id VARCHAR(255) NOT NULL, ",
+                "name VARCHAR(255) NOT NULL, ",
+                "description VARCHAR(255) NOT NULL, ",
+                "category VARCHAR(255) NOT NULL, ",
+                "currency VARCHAR(50) NOT NULL DEFAULT 'USD', ",
+                "amount DECIMAL(10, 2) NOT NULL DEFAULT 0.00, ",
+                "created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, ",
+                "updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, ",
+                "extra_data JSONB DEFAULT '{}'"
+            ]
         }
     ]
 }

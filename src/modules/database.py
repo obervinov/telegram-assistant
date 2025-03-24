@@ -476,9 +476,9 @@ class DatabaseClient:
         )
         return message[0] if message else None
 
-    def get_currencies(self) -> dict:
+    def get_finance_currency(self) -> dict:
         """
-        Get the all currencies from the database.
+        Get the all currencies from the database for finance module.
 
         Returns:
             dict: A dictionary containing the currencies.
@@ -494,34 +494,58 @@ class DatabaseClient:
                 currencies.append({'code': currency[0], 'name': currency[1], 'rate': currency[2], 'last_update': currency[3]})
         return currencies
 
-    def update_currency_list(self, data: dict = None) -> None:
+    def update_finance_currency(self, currency_list: dict = None, currency_rate: dict = None) -> None:
         """
-        Update the currency list in the database (code and full name).
+        Update the currency list or currency rate in the database for finance module.
 
-        Args:
-            data (dict): A dictionary containing the currency codes and full names.
+        Args (one of the two arguments must be provided)
+            currency_list (dict): A dictionary containing the currency codes and names.
+            currency_rate (dict): A dictionary containing the currency codes and rates. 
 
         Examples:
-            >>> update_currency(data={'USD': 'United States Dollar', 'EUR': 'Euro'})
+            >>> update_finance_currency(currency_list={'USD': 'United States Dollar', 'EUR': 'Euro'})
+            >>> update_finance_currency(currency_rate={'USD': 1.0, 'EUR': 0.85})
         """
-        exist_list = self.get_currencies()
-        for key, value in data.items():
-            if key not in [currency['code'] for currency in exist_list]:
-                self._insert(
-                    table_name='finance_currency',
-                    columns=('code', 'name'),
-                    values=(key, value)
-                )
+        if currency_list and currency_rate:
+            log.error('[Finance.Currency] The currency list and rate cannot be updated at the same time.')
+            raise ValueError('The currency list and rate cannot be updated at the same time.')
 
-    def update_currency_rate(self, data: dict = None) -> None:
+        if currency_list:
+            exist_list = self.get_finance_currency()
+            for key, value in currency_list.items():
+                if key not in [currency['code'] for currency in exist_list]:
+                    self._insert(
+                        table_name='finance_currency',
+                        columns=('code', 'name'),
+                        values=(key, value)
+                    )
+        elif currency_rate:
+            for key, value in currency_rate.items():
+                self._update(table_name='finance_currency', values=f"rate={value}", condition=f"code='{key}'")
+        else:
+            log.error('[Finance.Currency] The currency list or rate must be provided.')
+            raise ValueError('The currency list or rate must be provided.')
+
+    def add_finance_income(self, data: dict = None) -> None:
         """
-        Update the currency rate in the database.
+        Add or update the income to the database for finance module.
 
         Args:
-            data (dict): A dictionary containing the currency codes and rates.
+            data (dict): A dictionary containing the income data.
+                name (str): unique name of the income. Required.
+                description (str): the description of the income. Required.
+                category (str): the category of the income. Required.
+                currency (str): the currency of the income. Required.
+                amount (float): the amount of the income. Required.
+                updated_at (str): the updated date of the income. Optional.
+                extra_data (dict): the extra data of the income. Optional. Used for Deposit models.
 
         Examples:
-            >>> update_currency_rate(data={'USD': 1.0, 'EUR': 0.85})
+            >>> add_finance_income(name='Salary', description='Monthly salary', category='salary', currency='USD', amount=1000)
         """
-        for key, value in data.items():
-            self._update(table_name='finance_currency', values=f"rate={value}", condition=f"code='{key}'")
+        required_fields = ('name', 'description', 'category', 'currency', 'amount')
+        if not all(field in data for field in required_fields):
+            log.error('[Database]: The required fields are missing for the Finance Income.')
+            raise ValueError('The required fields are missing for the Finance Income.')
+
+        self._insert(table_name='finance_income', columns=tuple(data.keys()), values=tuple(data.values()))

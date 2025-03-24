@@ -18,6 +18,7 @@ from vault import VaultClient
 from src.modules.database import DatabaseClient
 from src.modules.metrics import Metrics
 from src.modules.finance.currency import Currency
+from src.modules.finance.income import Income
 
 
 def pytest_configure(config):
@@ -365,10 +366,10 @@ def fixture_postgres_messages_test_data(postgres_instance):
     conn.commit()
 
 
-@pytest.fixture(name="fake_currency_api", scope='session')
-def fixture_fake_currency_api():
+@pytest.fixture(name="finance_currency_api_mock", scope='session')
+def fixture_finance_currency_api_mock():
     """
-    This function sets up a fake currency API server.
+    This function sets up a fake Finance Currency API server.
     """
     def simple_app(environ, start_response):
         path = environ.get('PATH_INFO', '')
@@ -407,10 +408,18 @@ def fixture_fake_currency_api():
     thread.join()
 
 
-@pytest.fixture(name="currency_instance", scope='session')
-def fixture_currency_instance(database_class, fake_currency_api):
+@pytest.fixture(name="finance_currency_instance", scope='session')
+def fixture_finance_currency_instance(database_class, finance_currency_api_mock):
     """
-    Returns the currency class
+    Returns the Finance Currency class
     """
-    _ = fake_currency_api
+    _ = finance_currency_api_mock
     return Currency(app_id='test_app_id', database=database_class, api_url='http://localhost:8080')
+
+
+@pytest.fixture(name="finance_income_instance", scope='session')
+def fixture_finance_income_instance(database_class):
+    """
+    Returns the Finance Income class
+    """
+    return Income(database=database_class)

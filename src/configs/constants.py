@@ -9,8 +9,10 @@ TELEGRAM_BOT_NAME = os.environ.get('TELEGRAM_BOT_NAME', 'telegram-assistant')
 # permissions roles and buttons mapping
 # 'button_title': 'role'
 ROLES_MAP = {
-    'Finances': 'finances',
-    'Goals': 'goals'
+    'Finance: Income': 'finances',
+    'Finance: Expenses': 'finances',
+    'Finance: Report': 'finances',
+    'Finance: Settings': 'finances',
 }
 
 # Other constants

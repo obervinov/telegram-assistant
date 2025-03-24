@@ -26,14 +26,16 @@ ENV PATH=/home/${PROJECT_NAME}/.local/bin:$VENV_PATH/bin:$PATH
 
 
 ### Preparing user and directories ###
-RUN adduser -D -h /home/${PROJECT_NAME} -s /bin/sh ${PROJECT_NAME} && \
-    mkdir -p /home/${PROJECT_NAME} && \
+RUN useradd -m -d /home/${PROJECT_NAME} -s /bin/bash ${PROJECT_NAME} && \
     mkdir -p /home/${PROJECT_NAME}/app && \
     mkdir -p /home/${PROJECT_NAME}/tmp && \
-    chown ${PROJECT_NAME}. /home/${PROJECT_NAME} -R
+    chown -R ${PROJECT_NAME}:${PROJECT_NAME} /home/${PROJECT_NAME}
 
 ### Prepare tools and fix vulnerabilities ###
-RUN apk upgrade --no-cache && apk add --no-cache git curl
+RUN apt-get update && apt-get upgrade -y && \
+    apt-get install -y --no-install-recommends \
+        git curl && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 RUN pip3 install --upgrade pip setuptools
 
 ### Switching context ###
@@ -51,7 +53,7 @@ COPY LICENSE ./
 ### Installing poetry and python dependeces ###
 RUN curl -sSL https://install.python-poetry.org | python -
 RUN poetry install
-ENV PYTHONPATH=/home/${PROJECT_NAME}/app/src:/home/${PROJECT_NAME}/app/.venv/lib/python3.10/site-packages
+ENV PYTHONPATH=/home/${PROJECT_NAME}/app/src:/home/${PROJECT_NAME}/app/.venv/lib/python3.12/site-packages
 
 ### Entrypoint ###
 CMD [ "python3", "src/bot.py" ]

@@ -21,12 +21,12 @@ class Currency():
         :attribute database (Database): instance of the Database class.
 
     Methods:
-        :method _get_currencies_from_api(): Get the currencies from the Open Exchange Rates API. Private method.
+        :method _get_finance_currencies_from_api(): Get the currencies from the Open Exchange Rates API. Private method.
         :method _get_exchange_rates_from_api(): Get the exchange rates from the Open Exchange Rates API. Private method.
-        :method get_currencies(): Get the currencies from the internal database.
+        :method get_finance_currencies(): Get the currencies from the internal database.
         :method update_currencies_cache(): Update the currencies cache in the database.
         :method currency_converter(from_currency: str, amount: float, to_currency: str): Convert the amount from one currency to another.
-        :method run(): Method for running the currency module as a separate thread.
+        :method watcher(): Method for running the currency background task as a separate thread.
 
     Raises:
         :raises FailedExchangeAPIRequest: Raised when the exchange API request fails.
@@ -61,7 +61,7 @@ class Currency():
         self.timeout = kwargs.get('request_timeout', 10)
         self.headers = {'accept': 'application/json'}
 
-    def _get_currencies_from_api(self) -> dict:
+    def _get_finance_currencies_from_api(self) -> dict:
         """
         Get the currencies from the Open Exchange Rates API.
 
@@ -72,9 +72,9 @@ class Currency():
         url = f"{self.api_url}/currencies.json&app_id={self.app_id}"
         response = requests.get(url=url, headers=self.headers, timeout=self.timeout)
         if response.status_code == 200:
-            log.info('[Currency]: Successfully retrieved the currencies from the API.')
+            log.info('[Finance.Currency]: Successfully retrieved the currencies from the API.')
             return response.json()
-        log.error('[Currency]: Failed to retrieve the currencies from the API: %s', response.text)
+        log.error('[Finance.Currency]: Failed to retrieve the currencies from the API: %s', response.text)
         raise FailedExchangeAPIRequest("Failed to retrieve the currencies from the API.")
 
     def _get_exchange_rates_from_api(self) -> dict:
@@ -87,12 +87,12 @@ class Currency():
         url = f"{self.api_url}/latest.json?app_id={self.app_id}&base={self.base_currency}&prettyprint=false&show_alternative=false"
         response = requests.get(url=url, headers=self.headers, timeout=self.timeout)
         if response.status_code == 200:
-            log.info('[Currency]: Successfully retrieved the exchange rates from the API.')
+            log.info('[Finance.Currency]: Successfully retrieved the exchange rates from the API.')
             return response.json()
-        log.error('[Currency]: Failed to retrieve the exchange rates from the API: %s', response.text)
+        log.error('[Finance.Currency]: Failed to retrieve the exchange rates from the API: %s', response.text)
         raise FailedExchangeAPIRequest("Failed to retrieve the exchange rates from the API.")
 
-    def get_currencies(self) -> dict:
+    def get_currency(self) -> dict:
         """
         Get the currencies from the database.
 
@@ -100,26 +100,26 @@ class Currency():
             dict: A dictionary containing the currencies.
 
         Examples:
-            >>> get_currencies()
+            >>> get_finance_currencies()
             [{'code': 'USD', 'name': 'United States Dollar', 'rate': 1.0, 'last_update': datetime.datetime}]
         """
-        log.info('[Currency]: Getting currencies from the database...')
-        return self.database.get_currencies()
+        log.info('[Finance.Currency]: Getting currencies from the database...')
+        return self.database.get_finance_currency()
 
-    def update_currencies_cache(self) -> None:
+    def update_currency_cache(self) -> None:
         """
         Update the currencies cache in the database.
         """
-        log.info('[Currency]: Updating the currencies cache...')
-        log.info('[Currency]: Getting currencies from the exchange API...')
-        currencies = self._get_currencies_from_api()
-        log.info('[Currency]: Getting exchange rates from the exchange API...')
+        log.info('[Finance.Currency]: Updating the currencies cache...')
+        log.info('[Finance.Currency]: Getting currencies from the exchange API...')
+        currencies = self._get_finance_currencies_from_api()
+        log.info('[Finance.Currency]: Getting exchange rates from the exchange API...')
         currencies_rate = self._get_exchange_rates_from_api()
 
-        log.info('[Currency]: Updating the currencies list in the database...')
-        self.database.update_currency_list(data=currencies)
-        log.info('[Currency]: Updating the exchange rates in the database...')
-        self.database.update_currency_rate(data=currencies_rate['rates'])
+        log.info('[Finance.Currency]: Updating the currencies list in the database...')
+        self.database.update_finance_currency(currency_list=currencies)
+        log.info('[Finance.Currency]: Updating the exchange rates in the database...')
+        self.database.update_finance_currency(currency_rate=currencies_rate['rates'])
 
     def currency_converter(self, from_currency: str, amount: float, to_currency: str) -> float:
         """
@@ -137,8 +137,8 @@ class Currency():
             >>> currency_converter('USD', 100, 'EUR')
             85.0
         """
-        log.info('[Currency]: Converting currency %s %s -> %s', amount, from_currency, to_currency)
-        currency_cache = self.get_currencies()
+        log.info('[Finance.Currency]: Converting currency %s %s -> %s', amount, from_currency, to_currency)
+        currency_cache = self.get_currency()
 
         if from_currency == to_currency:
             value = amount
@@ -165,16 +165,16 @@ class Currency():
 
         return value
 
-    def run(self) -> None:
+    def watcher(self) -> None:
         """
-        Method for running the currency module as a separate thread.
+        Method for running the currency background task as a separate thread.
         """
-        log.info('[Currency]: Running the currency module...')
+        log.info('[Finance.Currency]: Running the watcher for the background task...')
         while True:
-            currency_cache = self.get_currencies()
+            currency_cache = self.get_currency()
             if not currency_cache:
-                self.update_currencies_cache()
+                self.update_currency_cache()
             elif currency_cache and (datetime.now() - currency_cache.get('last_update')).seconds > self.frequency * 3600:
-                self.update_currencies_cache()
-            log.info('[Currency]: Currency module finished successfully.')
+                self.update_currency_cache()
+            log.info('[Finance.Currency]: Currency module finished successfully.')
             time.sleep(60)

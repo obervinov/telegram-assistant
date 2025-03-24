@@ -39,11 +39,37 @@ CREATE TABLE messages (
     state VARCHAR (50) NOT NULL DEFAULT 'added'
 );
 
--- Schema for the currency table
+-- Schema for the finance currency table
 CREATE TABLE finance_currency (
     id SERIAL PRIMARY KEY,
     code VARCHAR(50) UNIQUE NOT NULL,
     name VARCHAR(255) NOT NULL,
     rate DECIMAL(10, 2) NOT NULL DEFAULT 0.0,
     last_update TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Schema for the finance settings table
+CREATE TABLE finance_settings (
+    id SERIAL PRIMARY KEY,
+    user_id VARCHAR(255) NOT NULL,
+    base_currency VARCHAR(50) NOT NULL DEFAULT 'USD',
+    additional_currencies VARCHAR(255) NOT NULL,
+    language VARCHAR(50) NOT NULL DEFAULT 'en',
+    timezone VARCHAR(50) NOT NULL DEFAULT 'UTC',
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Schema for the finance income table
+CREATE TABLE finance_income (
+    id SERIAL PRIMARY KEY,
+    user_id VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    description VARCHAR(255) NOT NULL,
+    category VARCHAR(255) NOT NULL,
+    currency VARCHAR(50) NOT NULL DEFAULT 'USD',
+    amount DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    extra_data JSONB DEFAULT '{}'
 );
