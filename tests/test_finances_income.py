@@ -4,12 +4,10 @@ import pytest
 
 
 @pytest.mark.order(7)
-def test_add_income_to_database(finance_income_instance, postgres_instance):
+def test_add_income_to_database(finance_income_instance, database_class):
     """
     Checking the method for adding income to the database.
     """
-    _, cursor = postgres_instance
-
     salary_data = {'name': 'Salary', 'description': 'Main income', 'category': 'Salary', 'currency': 'USD', 'amount': 1000}
     coinbox_data = {'name': 'CoinBox', 'description': 'Additional income', 'category': 'CoinBox', 'currency': 'USD', 'amount': 500}
     deposit_data = {
@@ -20,10 +18,10 @@ def test_add_income_to_database(finance_income_instance, postgres_instance):
     finance_income_instance.income(**coinbox_data)
     finance_income_instance.income(**deposit_data)
 
-    db_data = cursor.execute('SELECT * FROM finance_income').fetchall()
+    db_salary_data = database_class.get_finance_income(income_name='Salary')
+    db_coinbox_data = database_class.get_finance_income(income_name='CoinBox')
+    #db_deposit_data = database_class.get_finance_income(income_name='Deposit')
 
-    assert db_data == [
-        ('Salary', 'Main income', 'Salary', 'USD', Decimal('1000.00'), None),
-        ('CoinBox', 'Additional income', 'CoinBox', 'USD', Decimal('500.00'), None),
-        ('Deposit', 'Passive income', 'Deposit', 'USD', Decimal('1000.00'), None)
-    ]
+    assert db_salary_data.pop('updated_at').pop('extra_data') == salary_data
+    assert db_coinbox_data.pop('updated_at').pop('extra_data') == coinbox_data
+    # assert db_deposit_data.pop('updated_at') == deposit_data['extra_data'

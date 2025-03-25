@@ -538,17 +538,17 @@ class DatabaseClient:
 
         Examples:
             >>> get_finance_income(income_name='Salary')
-            {'name': 'Salary', 'description': 'Monthly salary', 'category': 'salary', 'currency': 'USD', 'amount': 1000.0, 'updated_at': datetime.datetime}
+            {'name': 'Salary', 'description': 'Salary', 'category': 'alary', 'currency': 'USD', 'amount': 1000.0, 'updated_at': datetime, 'extra_data': None}
         """
         response = self._select(
             table_name='finance_income',
-            columns=('name', 'description', 'category', 'currency', 'amount', 'updated_at'),
+            columns=('name', 'description', 'category', 'currency', 'amount', 'updated_at', 'extra_data'),
             condition=f"name = '{income_name}'",
             limit=1
         )
         return {
-            'name': response[0][0], 'description': response[0][1], 'category': response[0][2],
-            'currency': response[0][3], 'amount': response[0][4], 'updated_at': response[0][5]
+            'name': response[0][0], 'description': response[0][1], 'category': response[0][2], 'currency': response[0][3],
+            'amount': response[0][4], 'updated_at': response[0][5], 'extra_data': response[0][6]
         } if response else None
 
     def add_finance_income(self, data: dict = None) -> None:
