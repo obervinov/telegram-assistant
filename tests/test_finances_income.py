@@ -8,6 +8,8 @@ def test_add_income_to_database(finance_income_instance, postgres_instance):
     """
     Checking the method for adding income to the database.
     """
+    _, cursor = postgres_instance
+
     salary_data = {'name': 'Salary', 'description': 'Main income', 'category': 'Salary', 'currency': 'USD', 'amount': 1000}
     coinbox_data = {'name': 'CoinBox', 'description': 'Additional income', 'category': 'CoinBox', 'currency': 'USD', 'amount': 500}
     deposit_data = {
@@ -18,7 +20,7 @@ def test_add_income_to_database(finance_income_instance, postgres_instance):
     finance_income_instance.income(**coinbox_data)
     finance_income_instance.income(**deposit_data)
 
-    db_data = postgres_instance.cursor().execute('SELECT * FROM finance_income').fetchall()
+    db_data = cursor.execute('SELECT * FROM finance_income').fetchall()
 
     assert db_data == [
         ('Salary', 'Main income', 'Salary', 'USD', Decimal('1000.00'), None),
