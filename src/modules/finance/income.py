@@ -110,7 +110,7 @@ class Income:
                     'name': name, 'description': payload.get('description'), 'category': payload.get('category'), 'currency': payload.get('currency'),
                     'amount': payload.get('amount'), 'extra_data': payload.get('extra_data', None)
                 }
-                self.database.add_finance_income(**income_dict)
+                self.database.add_finance_income(data=income_dict)
             else:
                 log.info('[Finance.Income] Updating the income with name %s in the database...', name)
                 self.database.update_income(name=self.name, model=self.model, data=self.data)
