@@ -1,5 +1,4 @@
 """Tests for the Income sub module of the finance module."""
-from decimal import Decimal
 import pytest
 
 
