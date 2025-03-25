@@ -3,7 +3,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
-## v2.0.0 - 2025-03-24
+## v2.0.0 - 2025-03-25
 ### What's Changed
 **Full Changelog**: https://github.com/obervinov/telegram-assistant/compare/v1.0.0...v2.0.0 by @obervinov in https://github.com/obervinov/telegram-assistant/pull/4
 #### 💥 Breaking Changes

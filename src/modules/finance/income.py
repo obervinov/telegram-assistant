@@ -68,7 +68,7 @@ class Income:
         Returns:
             bool: True if the income exists, False otherwise.
         """
-        if self.database.get_income(name=name):
+        if self.database.get_finance_income(income_name=name):
             log.error('[Finance.Income] The income with name %s already exists in the database.', name)
             return True
         return False

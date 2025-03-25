@@ -526,6 +526,31 @@ class DatabaseClient:
             log.error('[Finance.Currency] The currency list or rate must be provided.')
             raise ValueError('The currency list or rate must be provided.')
 
+    def get_finance_income(self, income_name: str = None) -> dict:
+        """
+        Get the income from the database for finance module.
+
+        Args:
+            income_name (str): The name of the income.
+
+        Returns:
+            dict: A dictionary containing the income data.
+
+        Examples:
+            >>> get_finance_income(income_name='Salary')
+            {'name': 'Salary', 'description': 'Monthly salary', 'category': 'salary', 'currency': 'USD', 'amount': 1000.0, 'updated_at': datetime.datetime}
+        """
+        response = self._select(
+            table_name='finance_income',
+            columns=('name', 'description', 'category', 'currency', 'amount', 'updated_at'),
+            condition=f"name = '{income_name}'",
+            limit=1
+        )
+        return {
+            'name': response[0][0], 'description': response[0][1], 'category': response[0][2],
+            'currency': response[0][3], 'amount': response[0][4], 'updated_at': response[0][5]
+        } if response else None
+
     def add_finance_income(self, data: dict = None) -> None:
         """
         Add or update the income to the database for finance module.
