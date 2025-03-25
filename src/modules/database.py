@@ -526,24 +526,28 @@ class DatabaseClient:
             log.error('[Finance.Currency] The currency list or rate must be provided.')
             raise ValueError('The currency list or rate must be provided.')
 
-    def get_finance_income(self, income_name: str = None) -> dict:
+    def get_finance_income(self, user_id: str = None, income_name: str = None) -> dict:
         """
         Get the income from the database for finance module.
 
         Args:
+            user_id (str): The ID of the user.
             income_name (str): The name of the income.
 
         Returns:
             dict: A dictionary containing the income data.
 
         Examples:
-            >>> get_finance_income(income_name='Salary')
-            {'name': 'Salary', 'description': 'Salary', 'category': 'alary', 'currency': 'USD', 'amount': 1000.0, 'updated_at': datetime, 'extra_data': None}
+            >>> get_finance_income(user_id='12345', 'income_name='Salary')
+            {
+              'name': 'Salary', 'description': 'Salary for the month', 'category': 'Salary',
+              'currency': 'USD', 'amount': 1000, 'updated_at': datetime.datetime, 'extra_data': None
+            }
         """
         response = self._select(
             table_name='finance_income',
             columns=('name', 'description', 'category', 'currency', 'amount', 'updated_at', 'extra_data'),
-            condition=f"name = '{income_name}'",
+            condition=f"name = '{income_name} AND user_id = '{user_id}'",
             limit=1
         )
         return {
