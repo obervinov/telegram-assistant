@@ -551,11 +551,12 @@ class DatabaseClient:
             'amount': response[0][4], 'updated_at': response[0][5], 'extra_data': response[0][6]
         } if response else None
 
-    def add_finance_income(self, data: dict = None) -> None:
+    def add_finance_income(self, user_id: str = None, data: dict = None) -> None:
         """
         Add or update the income to the database for finance module.
 
         Args:
+            user_id (str): The ID of the user.
             data (dict): A dictionary containing the income data.
                 name (str): unique name of the income. Required.
                 description (str): the description of the income. Required.
@@ -566,11 +567,12 @@ class DatabaseClient:
                 extra_data (dict): the extra data of the income. Optional. Used for Deposit models.
 
         Examples:
-            >>> add_finance_income(name='Salary', description='Monthly salary', category='salary', currency='USD', amount=1000)
+            >>> add_finance_income(user_id='12345', name='Salary', description='Salary for the month', category='Salary', currency='USD', amount=1000)
         """
-        required_fields = ('name', 'description', 'category', 'currency', 'amount')
+        required_fields = ('user_id', 'name', 'description', 'category', 'currency', 'amount')
+
         if not all(field in data for field in required_fields):
             log.error('[Database]: The required fields are missing for the Finance Income.')
             raise ValueError('The required fields are missing for the Finance Income.')
 
-        self._insert(table_name='finance_income', columns=tuple(data.keys()), values=tuple(data.values()))
+        self._insert(table_name='finance_income', columns=tuple('user_id', *data.keys()), values=(user_id, *data.values()))

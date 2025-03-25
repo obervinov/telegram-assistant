@@ -73,7 +73,7 @@ class Income:
             return True
         return False
 
-    def income(self, name: str, **payload) -> None:
+    def income(self, user_id: str, name: str, **payload) -> None:
         """
         The method add or update the income to the database. Supported:
          - Salary - a simple basic income accounting model without regular changes.
@@ -81,6 +81,7 @@ class Income:
          - CoinBox - a model for accounting for the amount of coins in the box. Supported simple increase and decrease of the amount.
 
         Args:
+            user_id (str): the user id of the income.
             name (str): unique name of the income. Required.
             **payload: the additional fields for the income.
 
@@ -96,10 +97,10 @@ class Income:
                 :param interest_rate (float): the interest rate of the deposit (in percent).
                 :param tax (float): the tax of the deposit (in percent).
         Examples:
-            >>> income(category='Salary', name='Salary', description='Salary for the month', currency='USD', amount=1000)
-            >>> income(category='CoinBox', name='CoinBox', description='CoinBox for the month', currency='USD', amount=1000)
+            >>> income(user_id='12345', category='Salary', name='Salary', description='Salary for the month', currency='USD', amount=1000)
+            >>> income(user_id='12345',category='CoinBox', name='CoinBox', description='CoinBox for the month', currency='USD', amount=1000)
             >>> income(
-            >>>   category='Deposit', name='Deposit', description='Deposit for the month', currency='USD', amount=1000,
+            >>>   user_id='12345', category='Deposit', name='Deposit', description='Deposit for the month', currency='USD', amount=1000,
             >>>   start_date='2021-01-01', expiration_date='2022-01-01', interest_rate=2, tax=10
             >>> )
         """
@@ -110,10 +111,10 @@ class Income:
                     'name': name, 'description': payload.get('description'), 'category': payload.get('category'), 'currency': payload.get('currency'),
                     'amount': payload.get('amount'), 'extra_data': payload.get('extra_data', None)
                 }
-                self.database.add_finance_income(data=income_dict)
+                self.database.add_finance_income(user_id=user_id, data=income_dict)
             else:
                 log.info('[Finance.Income] Updating the income with name %s in the database...', name)
-                self.database.update_income(name=self.name, model=self.model, data=self.data)
+                # self.database.update_income(name=self.name, model=self.model, data=self.data)
 
     def watcher(self) -> None:
         """
