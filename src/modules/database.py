@@ -573,9 +573,9 @@ class DatabaseClient:
         Examples:
             >>> add_finance_income(user_id='12345', name='Salary', description='Salary for the month', category='Salary', currency='USD', amount=1000)
         """
-        required_fields = ('user_id', 'name', 'description', 'category', 'currency', 'amount')
+        required_fields = ('name', 'description', 'category', 'currency', 'amount')
 
-        if not all(field in data for field in required_fields):
+        if not all(field in data for field in required_fields) or not user_id:
             log.error('[Database]: The required fields are missing for the Finance Income.')
             raise ValueError('The required fields are missing for the Finance Income.')
 
