@@ -547,7 +547,7 @@ class DatabaseClient:
         response = self._select(
             table_name='finance_income',
             columns=('name', 'description', 'category', 'currency', 'amount', 'updated_at', 'extra_data'),
-            condition=f"name = '{income_name} AND user_id = '{user_id}'",
+            condition=f"name = '{income_name}' AND user_id = '{user_id}'",
             limit=1
         )
         return {

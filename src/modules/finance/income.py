@@ -58,18 +58,19 @@ class Income:
 
         return True
 
-    def _check_income_exists(self, name) -> bool:
+    def _check_income_exists(self, user_id, name) -> bool:
         """
         The method checks if the income already exists in the database.
 
         Args:
+            user_id (str): the user id of the income.
             name (str): the name of the income.
 
         Returns:
             bool: True if the income exists, False otherwise.
         """
-        if self.database.get_finance_income(income_name=name):
-            log.error('[Finance.Income] The income with name %s already exists in the database.', name)
+        if self.database.get_finance_income(user_id=user_id, income_name=name):
+            log.error('[Finance.Income] The income with name %s already exists in the database for user %s.', name, user_id)
             return True
         return False
 
@@ -105,7 +106,7 @@ class Income:
             >>> )
         """
         if self._check_model(name=name, **payload):
-            if not self._check_income_exists(name=name):
+            if not self._check_income_exists(user_id=user_id, name=name):
                 log.info('[Finance.Income] Adding the income with name %s to the database...', name)
                 income_dict = {
                     'name': name, 'description': payload.get('description'), 'category': payload.get('category'), 'currency': payload.get('currency'),
