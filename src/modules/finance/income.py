@@ -52,7 +52,7 @@ class Income:
 
         if kwargs.get('category') == 'Deposit':
             for field in deposit_required_payload_fields:
-                if field not in kwargs:
+                if field not in kwargs.get('extra_data', {}):
                     log.error('[Finance.Income] The field %s is required for the income.', field)
                     return False
 
