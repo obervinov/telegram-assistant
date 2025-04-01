@@ -86,23 +86,24 @@ class Income:
             name (str): unique name of the income. Required.
             **payload: the additional fields for the income.
 
-        Keyword Args:
+        Keyword Args (Payload fields):
             (used for all models):
                 description (str): the description of the income.
                 category (str): the category of the income.
                 currency (str): the currency of the income.
                 amount (float): the amount of the income.
-            model Deposit (payload fields):
-                :param start_date (str): the start date of the deposit.
-                :param expiration_date (str): the expiration date of the deposit.
-                :param interest_rate (float): the interest rate of the deposit (in percent).
-                :param tax (float): the tax of the deposit (in percent).
+            model Deposit (expected in extra_data field):
+                extra_data (dict): the extra data for the income. Required for Deposit model.
+                    start_date (str): the start date of the deposit.
+                    expiration_date (str): the expiration date of the deposit.
+                    interest_rate (float): the interest rate of the deposit.
+                    tax (float): the tax of the deposit.
         Examples:
             >>> income(user_id='12345', category='Salary', name='Salary', description='Salary for the month', currency='USD', amount=1000)
-            >>> income(user_id='12345',category='CoinBox', name='CoinBox', description='CoinBox for the month', currency='USD', amount=1000)
+            >>> income(user_id='12345', category='CoinBox', name='CoinBox', description='CoinBox for the month', currency='USD', amount=1000)
             >>> income(
             >>>   user_id='12345', category='Deposit', name='Deposit', description='Deposit for the month', currency='USD', amount=1000,
-            >>>   start_date='2021-01-01', expiration_date='2022-01-01', interest_rate=2, tax=10
+            >>>   extra_data={'start_date': '2021-01-01', 'expiration_date': '2022-01-01', 'interest_rate': 2, 'tax': 10}
             >>> )
         """
         if self._check_model(name=name, **payload):

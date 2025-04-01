@@ -11,7 +11,7 @@ def test_add_income_to_database(finance_income_instance, database_class):
     coinbox_data = {'name': 'CoinBox', 'description': 'Additional income', 'category': 'CoinBox', 'currency': 'USD', 'amount': 500}
     deposit_data = {
         'name': 'Deposit', 'description': 'Passive income', 'category': 'Deposit', 'currency': 'USD', 'amount': 1000,
-        'start_date': '2021-01-01', 'expiration_date': '2022-01-01', 'interest_rate': 10, 'tax': 5
+        'extra_data': {'start_date': '2021-01-01', 'expiration_date': '2022-01-01', 'interest_rate': 10, 'tax': 5}
     }
     finance_income_instance.income(user_id='111', **salary_data)
     finance_income_instance.income(user_id='111', **coinbox_data)
@@ -34,10 +34,4 @@ def test_add_income_to_database(finance_income_instance, database_class):
     assert db_coinbox_data == coinbox_data
 
     db_deposit_data.pop('updated_at', None)
-    deposit_main_data = {k: v for k, v in deposit_data.items() if k not in ['start_date', 'expiration_date', 'interest_rate', 'tax']}
-    deposit_extra_data = {
-        'start_date': deposit_data['start_date'], 'expiration_date': deposit_data['expiration_date'],
-        'interest_rate': deposit_data['interest_rate'], 'tax': deposit_data['tax']
-    }
-    deposit_target_data = {**deposit_main_data, 'extra_data': deposit_extra_data}
-    assert db_deposit_data == deposit_target_data
+    assert db_deposit_data == deposit_data
