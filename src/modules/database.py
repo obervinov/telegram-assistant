@@ -579,4 +579,8 @@ class DatabaseClient:
             log.error('[Database]: The required fields are missing for the Finance Income.')
             raise ValueError('The required fields are missing for the Finance Income.')
 
+        # Prepare data for insert to the database as JSONB
+        if data.get('extra_data', None):
+            data['extra_data'] = json.dumps(data['extra_data'])
+
         self._insert(table_name='finance_income', columns=tuple(['user_id', *data.keys()]), values=(user_id, *data.values()))
