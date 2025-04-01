@@ -19,11 +19,11 @@ def test_add_income_to_database(finance_income_instance, database_class):
 
     db_salary_data = database_class.get_finance_income(user_id='111', income_name='Salary')
     db_coinbox_data = database_class.get_finance_income(user_id='111', income_name='CoinBox')
-    # db_deposit_data = database_class.get_finance_income(income_name='Deposit')
+    db_deposit_data = database_class.get_finance_income(user_id='111', income_name='Deposit')
 
     assert db_salary_data is not None
     assert db_coinbox_data is not None
-    # assert db_deposit_data is not
+    assert db_deposit_data is not None
 
     db_salary_data.pop('updated_at', None)
     db_salary_data.pop('extra_data', None)
@@ -33,4 +33,11 @@ def test_add_income_to_database(finance_income_instance, database_class):
     db_coinbox_data.pop('extra_data', None)
     assert db_coinbox_data == coinbox_data
 
-    # assert db_deposit_data.pop('updated_at') == deposit_data['extra_data'
+    db_deposit_data.pop('updated_at', None)
+    deposit_main_data = {k: v for k, v in deposit_data.items() if k not in ['start_date', 'expiration_date', 'interest_rate', 'tax']}
+    deposit_extra_data = {
+        'start_date': deposit_data['start_date'], 'expiration_date': deposit_data['expiration_date'],
+        'interest_rate': deposit_data['interest_rate'], 'tax': deposit_data['tax']
+    }
+    deposit_target_data = {**deposit_main_data, 'extra_data': deposit_extra_data}
+    assert db_deposit_data == deposit_target_data
