@@ -46,7 +46,7 @@ class Income:
                 log.error('[Finance.Income] The field %s is required for the income.', field)
                 return False
 
-        if not ('Salary' or 'Deposit' or 'CoinBox') in kwargs.get('category'):
+        if kwargs.get('category') not in ['Salary', 'Deposit', 'CoinBox']:
             log.error('[Finance.Income] The category %s is not supported for the income.', kwargs.get('category'))
             return False
 
