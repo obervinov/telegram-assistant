@@ -25,6 +25,12 @@ def test_add_income_to_database(finance_income_instance, database_class):
     assert db_coinbox_data is not None
     # assert db_deposit_data is not
 
-    assert db_salary_data.pop('updated_at').pop('extra_data') == salary_data
-    assert db_coinbox_data.pop('updated_at').pop('extra_data') == coinbox_data
+    db_salary_data.pop('updated_at', None)
+    db_salary_data.pop('extra_data', None)
+    assert db_salary_data == salary_data
+
+    db_coinbox_data.pop('updated_at', None)
+    db_coinbox_data.pop('extra_data', None)
+    assert db_coinbox_data == coinbox_data
+
     # assert db_deposit_data.pop('updated_at') == deposit_data['extra_data'
