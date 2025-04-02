@@ -46,9 +46,9 @@ def start_command(message: tg.telegram_types.Message, access_result: dict) -> No
     Args:
         message (telegram.telegram_types.Message): The message object containing information about the chat.
     """
-    log.info('[Bot]: Processing start command for user %s...', message.chat.id)
+    log.info('[Bot.start_command]: Processing start command for user %s...', message.chat.id)
     # Main pinned message
-    reply_markup = tg.create_inline_markup(names=ROLES_MAP.keys(), size=2)
+    reply_markup = tg.create_inline_markup(names=ROLES_MAP.keys())
     start_message = tg.send_styled_message(
         chat_id=message.chat.id,
         messages_template={
@@ -72,20 +72,20 @@ def bot_callback_query_handler(call: tg.callback_query, access_result: dict) -> 
         call (tg.callback_query): The callback query§
         access_result (dict): The dictionary containing the access result. Propagated from the access_control decorator.
     """
-    log.info('[Bot]: Processing button %s for user %s...', call.data, call.message.chat.id)
+    log.info('[Bot.callback_query_handler]: Processing button %s for user %s...', call.data, call.message.chat.id)
     alias = None
-    if call.data == "Finance: Income":
+    if call.data == "Finance:income":
         alias = 'help_for_finance_income'
         method = finance_income_entry
     else:
-        log.error('[Bot]: Handler for button %s not found', call.data)
+        log.error('[Bot.callback_query_handler]: Handler for button %s not found', call.data)
         alias = 'unknown_command'
         method = None
     help_message = tg.send_styled_message(chat_id=call.message.chat.id, messages_template={'alias': alias})
     bot.register_next_step_handler(call.message, method, help_message)
 
 
-@users.access_control(flow='authz', role_id=ROLES_MAP['Finance: Income'])
+@users.access_control(flow='authz', role_id=ROLES_MAP['Finance:income'])
 def finance_income_entry(message: tg.telegram_types.Message, help_message: tg.telegram_types.Message, access_result: dict) -> None:
     """
     Processes the finance income entry command.
@@ -95,7 +95,8 @@ def finance_income_entry(message: tg.telegram_types.Message, help_message: tg.te
         help_message (telegram.telegram_types.Message, optional): The help message to be deleted. Defaults to None.
         access_result (dict): The dictionary containing the access result. Propagated from the access_control decorator.
     """
-    log.info('[Bot]: Processing finance income message for user %s...', message.chat.id)
+    log.info('[Bot.finance_income_entry]: Processing finance income message for user %s...', message.chat.id)
+    log.debug('[Bot.finance_income_entry]: Access result: %s\nMessage:%s', access_result)
     payload = {}
     cleanup_message = True
     mapper = {1: 'name', 2: 'description', 3: 'category', 4: 'currency', 5: 'amount'}
@@ -103,7 +104,7 @@ def finance_income_entry(message: tg.telegram_types.Message, help_message: tg.te
 
     if len(input_data) < len(mapper):
         tg.send_styled_message(chat_id=message.chat.id, messages_template={'alias': 'wrong_input'})
-        log.error('[Bot]: Wrong input data %s from user %s', message.text, message.chat.id)
+        log.error('[Bot.finance_income_entry]: Wrong input data %s from user %s', message.text, message.chat.id)
         cleanup_message = False
 
     elif len(input_data) == len(mapper):
@@ -111,7 +112,7 @@ def finance_income_entry(message: tg.telegram_types.Message, help_message: tg.te
             if index in mapper:
                 payload[mapper[index]] = item.strip()
             else:
-                log.error('[Bot]: Something went wrong with the mapper %s', mapper)
+                log.error('[Bot.finance_income_entry]: Something went wrong with the mapper %s', mapper)
                 break
 
     elif len(input_data) > len(mapper):
@@ -140,7 +141,7 @@ def unknown_command(message: tg.telegram_types.Message = None) -> None:
     Args:
         message (telegram.telegram_types.Message): The message object containing the unrecognized command.
     """
-    log.error('[Bot]: Invalid command %s from user %s', message.text, message.chat.id)
+    log.error('[Bot.unknown_command]: Invalid command %s from user %s', message.text, message.chat.id)
     tg.send_styled_message(chat_id=message.chat.id, messages_template={'alias': 'unknown_command'})
 # END HANDLERS BLOCK ##############################################################################################################
 
