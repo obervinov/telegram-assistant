@@ -31,12 +31,7 @@ class Currency():
     Raises:
         :raises FailedExchangeAPIRequest: Raised when the exchange API request fails.
     """
-    def __init__(
-        self,
-        app_id: str,
-        database: object,
-        **kwargs
-    ) -> None:
+    def __init__(self, app_id: str, database: object, **kwargs) -> None:
         """
         Initialize the class with the necessary parameters.
 

@@ -1,6 +1,8 @@
 """
 This module contains the main code for the bot to work and contains the main logic linking the additional modules.
 """
+# pylint: disable=unused-argument
+
 import threading
 import time
 
@@ -13,6 +15,7 @@ from configs.constants import (TELEGRAM_BOT_NAME, ROLES_MAP, METRICS_PORT, METRI
 from modules.database import DatabaseClient
 # from modules.tools import get_hash
 from modules.metrics import Metrics
+from modules.finance import Finance
 
 
 # Vault client
@@ -28,6 +31,8 @@ metrics = Metrics(port=METRICS_PORT, interval=METRICS_INTERVAL, metrics_prefix=T
 # Users manager instance
 users = Users(vault={'instance': vault, 'role': f"{VAULT_DB_ROLE}-users"}, rate_limits=False)
 
+# Finance manager instance
+finance = Finance(database=database, vault=vault)
 
 # START HANDLERS BLOCK ##############################################################################################################
 # Command handler for START command
@@ -55,27 +60,73 @@ def start_command(message: tg.telegram_types.Message = None) -> None:
     bot.delete_message(message.chat.id, message.id)
 
 
-# Callback query handler for InlineKeyboardButton (BUTTONS)
+# Callback query handler for InlineKeyboardButton
 @bot.callback_query_handler(func=lambda call: True)
 @users.access_control(flow='auth')
-def bot_callback_query_handler(call: tg.callback_query = None) -> None:
+def bot_callback_query_handler(call: tg.callback_query, access_result: dict) -> None:
     """
-    The handler for the callback query from the user. Mainly used to handle button presses.
+    Processes the button press from the user.
 
     Args:
-        call (telegram.callback_query): The callback query object.
+        call (tg.callback_query): The callback query§
+        access_result (dict): The dictionary containing the access result. Propagated from the access_control decorator.
     """
     log.info('[Bot]: Processing button %s for user %s...', call.data, call.message.chat.id)
+    alias = None
+    if call.data == "Finance: Income":
+        alias = 'help_for_finance_income'
+        method = finance_income_entry
+    else:
+        log.error('[Bot]: Handler for button %s not found', call.data)
+        alias = 'unknown_command'
+        method = None
+    help_message = tg.send_styled_message(chat_id=call.message.chat.id, messages_template={'alias': alias})
+    bot.register_next_step_handler(call.message, method, help_message)
 
-    # if call.data == "Finances":
-    #     help_message = tg.send_styled_message(
-    #         chat_id=call.message.chat.id,
-    #         messages_template={'alias': 'help_for_finances'}
-    #     )
-    #     bot.register_next_step_handler(call.message, finances_entrypoint, help_message)
 
-    # else:
-    #     log.error('[Bot]: Handler for button %s not found', call.data)
+@users.access_control(flow='authz', role_id=ROLES_MAP['Finance: Income'])
+def finance_income_entry(message: tg.telegram_types.Message, help_message: tg.telegram_types.Message, access_result: dict) -> None:
+    """
+    Processes the finance income entry command.
+
+    Args:
+        message (telegram.telegram_types.Message, optional): The message object containing the finance entry command.
+        help_message (telegram.telegram_types.Message, optional): The help message to be deleted. Defaults to None.
+        access_result (dict): The dictionary containing the access result. Propagated from the access_control decorator.
+    """
+    log.info('[Bot]: Processing finance income message for user %s...', message.chat.id)
+    payload = {}
+    cleanup_message = True
+    mapper = {1: 'name', 2: 'description', 3: 'category', 4: 'currency', 5: 'amount'}
+    input_data = message.text.split(',')
+
+    if len(input_data) < len(mapper):
+        tg.send_styled_message(chat_id=message.chat.id, messages_template={'alias': 'wrong_input'})
+        log.error('[Bot]: Wrong input data %s from user %s', message.text, message.chat.id)
+        cleanup_message = False
+
+    elif len(input_data) == len(mapper):
+        for index, item in enumerate(input_data):
+            if index in mapper:
+                payload[mapper[index]] = item.strip()
+            else:
+                log.error('[Bot]: Something went wrong with the mapper %s', mapper)
+                break
+
+    elif len(input_data) > len(mapper):
+        extra_data = {}
+        for index, item in enumerate(input_data):
+            if index in mapper:
+                payload[mapper[index]] = item.strip()
+            else:
+                extra_data[mapper[index]] = item.strip()
+        payload['extra_data'] = extra_data
+
+    _ = finance.income.add(user_id=message.chat.id, **payload)
+
+    if cleanup_message:
+        tg.delete_message(message.chat.id, message.id)
+        tg.delete_message(message.chat.id, help_message.id)
 
 
 # Handler for incorrect flow (UNKNOWN INPUT)
