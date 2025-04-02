@@ -13,4 +13,4 @@ def test_init_finance_module(finance_instance):
     assert finance_instance.currency is not None
     assert finance_instance.income is not None
 
-    assert finance_instance.configuration['currency_app_id'] == 'currency_app_id'
+    assert finance_instance.configuration['currency_app_id'] == 'qwerty123'
