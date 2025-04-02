@@ -37,7 +37,7 @@ class Finance:
             >>> Finance(database=<DatabaseClient>, vault=<VaultClient>)
         """
         log.info('[Finance] Initializing the finance module.')
-        self.configuration = vault.kv2.read_secret(path='configuration/finance')
+        self.configuration = vault.kv2engine.read_secret(path='configuration/finance')
         currency_config = {}
         income_config = {}
         expense_config = {}
