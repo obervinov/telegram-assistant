@@ -47,11 +47,11 @@ class Finance:
 
         for key, value in self.configuration.items():
             if key.startswith('currency_'):
-                currency_config[key] = value
+                currency_config[key.replace('currency_', '')] = value
             elif key.startswith('income_'):
-                income_config[key] = value
+                income_config[key.replace('income_', '')] = value
             elif key.startswith('expense_'):
-                expense_config[key] = value
+                expense_config[key.replace('expense_', '')] = value
 
         log.info('[Finance] The configuration for the finance module is valid.')
         log.debug('[Finance] The configuration for the finance module is %s', self.configuration)

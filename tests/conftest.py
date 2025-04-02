@@ -17,6 +17,7 @@ from psycopg2 import sql
 from vault import VaultClient
 from src.modules.database import DatabaseClient
 from src.modules.metrics import Metrics
+from src.modules.finance.main import Finance
 from src.modules.finance.currency import Currency
 from src.modules.finance.income import Income
 
@@ -301,6 +302,16 @@ def fixture_vault_configuration_data(vault_instance, namespace):
             value=value
         )
 
+    finance_conf = {
+        'currency_app_id': 'qwerty123',
+    }
+    for key, value in finance_conf.items():
+        _ = vault_instance.kv2engine.write_secret(
+            path='configuration/finance',
+            key=key,
+            value=value
+        )
+
     _ = vault_instance.kv2engine.write_secret(
         path='configuration/telegram',
         key='token',
@@ -321,7 +332,6 @@ def fixture_vault_configuration_data(vault_instance, namespace):
             key=key,
             value=value
         )
-
 
 @pytest.fixture(name="database_class", scope='session')
 def fixture_database_class(vault_instance, namespace, vault_configuration_data):
@@ -423,3 +433,11 @@ def fixture_finance_income_instance(database_class):
     Returns the Finance Income class
     """
     return Income(database=database_class)
+
+
+@pytest.fixture(name="finance_instance", scope='session')
+def fixture_finance_instance(database_class, vault_instance):
+    """
+    Returns the Finance Main class
+    """
+    return Finance(database=database_class, vault=vault_instance)
