@@ -333,6 +333,7 @@ def fixture_vault_configuration_data(vault_instance, namespace):
             value=value
         )
 
+
 @pytest.fixture(name="database_class", scope='session')
 def fixture_database_class(vault_instance, namespace, vault_configuration_data):
     """
