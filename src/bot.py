@@ -99,7 +99,7 @@ def finance_income_entry(message: tg.telegram_types.Message, help_message: tg.te
     payload = {}
     cleanup_message = True
     mapper = {1: 'name', 2: 'description', 3: 'category', 4: 'currency', 5: 'amount'}
-    input_data = message.text.split(',')
+    input_data = message.text.split(', ')
 
     if len(input_data) < len(mapper):
         tg.send_styled_message(chat_id=message.chat.id, messages_template={'alias': 'wrong_input'})
