@@ -1,12 +1,11 @@
 """
-This module contains tests for the database module.
+This module contains tests for the messages module.
 """
-import requests
 import pytest
 
 
 @pytest.mark.order(9)
-def test_messages(messages_instance)
+def test_messages(messages_instance):
     """
     Checking that the messages module is initialized correctly with src/configs/messages.json
     """
