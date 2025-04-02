@@ -17,9 +17,9 @@ def test_add_income_to_database(finance_income_instance, database_class):
     finance_income_instance.add(user_id='111', **coinbox_data)
     finance_income_instance.add(user_id='111', **deposit_data)
 
-    db_salary_data = database_class.get(user_id='111', income_name='Salary')
-    db_coinbox_data = database_class.get(user_id='111', income_name='CoinBox')
-    db_deposit_data = database_class.get(user_id='111', income_name='Deposit')
+    db_salary_data = database_class.get_finance_income(user_id='111', income_name='Salary')
+    db_coinbox_data = database_class.get_finance_income(user_id='111', income_name='CoinBox')
+    db_deposit_data = database_class.get_finance_income(user_id='111', income_name='Deposit')
 
     assert db_salary_data is not None
     assert db_coinbox_data is not None
