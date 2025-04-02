@@ -106,7 +106,7 @@ class Income:
                     tax (float): the tax of the deposit.
 
         Returns:
-            str: The status of the operation (added or updated or failed). 
+            str: The status of the operation (added or updated or failed).
 
         Examples:
             >>> income(user_id='12345', category='salary', name='Salary', description='Salary for the month', currency='USD', amount=1000)
