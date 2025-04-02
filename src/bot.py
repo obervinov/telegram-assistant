@@ -34,6 +34,7 @@ users = Users(vault={'instance': vault, 'role': f"{VAULT_DB_ROLE}-users"}, rate_
 # Finance manager instance
 finance = Finance(database=database, vault=vault)
 
+
 # START HANDLERS BLOCK ##############################################################################################################
 # Command handler for START command
 @bot.message_handler(commands=['start'])
