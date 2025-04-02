@@ -6,7 +6,7 @@
         },
         "reject_message": {
             "text": "Greetings to <b>{0}</b> ({1})! \nThis is a <b>private bot</b> and it looks like you don't have the necessary access rights {3}\nHave a nice day and bye!",
-            "args": ["username", "userid", ":raised_hand:", ":no_entry:"]
+            "args": ["username", "userid", ":raised_hand:"]
         },
         "permission_denied_message": {
             "text": "{0} Sorry, you have not permissions for use this feature. Please, check you permission roles.\nMetadata:\n<code>userid: {1}</code>\n<code>username: {2}</code>",
