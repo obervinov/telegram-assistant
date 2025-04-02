@@ -48,7 +48,7 @@ def start_command(message: tg.telegram_types.Message, access_result: dict) -> No
     """
     log.info('[Bot]: Processing start command for user %s...', message.chat.id)
     # Main pinned message
-    reply_markup = tg.create_inline_markup(ROLES_MAP.keys())
+    reply_markup = tg.create_inline_markup(names=ROLES_MAP.keys(), size=2)
     start_message = tg.send_styled_message(
         chat_id=message.chat.id,
         messages_template={

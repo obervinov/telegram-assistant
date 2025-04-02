@@ -1,7 +1,7 @@
 {
     "templates": {
         "start_message": {
-            "text": "Hi, <b>{0}</b>({1})! {2}\nAccess for your account - allowed {3}\n<b>Choose the function you want to use:</b>",
+            "text": "Hi, <b>{0}</b>({1})! {2} Access for your account - allowed {3}\n<b>Choose the function you want to use:</b>",
             "args": ["username", "userid", ":raised_hand:", ":unlocked:"]
         },
         "reject_message": {
