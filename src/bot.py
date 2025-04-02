@@ -39,7 +39,7 @@ finance = Finance(database=database, vault=vault)
 # Command handler for START command
 @bot.message_handler(commands=['start'])
 @users.access_control(flow='auth')
-def start_command(message: tg.telegram_types.Message = None) -> None:
+def start_command(message: tg.telegram_types.Message, access_result: dict) -> None:
     """
     Sends a startup message to the specified Telegram chat.
 
