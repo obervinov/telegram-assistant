@@ -14,6 +14,7 @@ import psycopg2
 from psycopg2 import sql
 
 # pylint: disable=E0401
+from messages import Messages
 from vault import VaultClient
 from src.modules.database import DatabaseClient
 from src.modules.metrics import Metrics
@@ -442,3 +443,12 @@ def fixture_finance_instance(database_class, vault_instance):
     Returns the Finance Main class
     """
     return Finance(database=database_class, vault=vault_instance)
+
+
+@pytest.fixture(name="messages_instance", scope='session')
+def fixture_messages_instance():
+    """
+    Returns the Messages class
+    Used for testing messages config before building the bot
+    """
+    return Messages(config_path='src/configs/messages.json')
