@@ -64,7 +64,7 @@ class Currency():
             dict: A dictionary containing the currencies.
         Return
         """
-        url = f"{self.api_url}/currencies.json?prettyprint=false&show_alternative=false&show_inactive=false&app_id={self.app_id}"
+        url = f"{self.api_url}/currencies.json"
         response = requests.get(url=url, headers=self.headers, timeout=self.timeout)
         if response.status_code == 200:
             log.info('[Finance.Currency]: Successfully retrieved the currencies from the API.')
