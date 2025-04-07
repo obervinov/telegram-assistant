@@ -385,7 +385,7 @@ def fixture_finance_currency_api_mock():
     """
     def simple_app(environ, start_response):
         path = environ.get('PATH_INFO', '')
-        if path == '/currencies.json&prettyprint=false&show_alternative=false&show_inactive=false&app_id=test_app_id':
+        if path == '/currencies.json?prettyprint=false&show_alternative=false&show_inactive=false&app_id=test_app_id':
             response_body = json.dumps({
                 "USD": "United States Dollar",
                 "EUR": "Euro",
