@@ -64,12 +64,12 @@ class Currency():
             dict: A dictionary containing the currencies.
         Return
         """
-        url = f"{self.api_url}/currencies.json&app_id={self.app_id}"
+        url = f"{self.api_url}/currencies.json&prettyprint=false&show_alternative=false&show_inactive=false&app_id={self.app_id}"
         response = requests.get(url=url, headers=self.headers, timeout=self.timeout)
         if response.status_code == 200:
             log.info('[Finance.Currency]: Successfully retrieved the currencies from the API.')
             return response.json()
-        log.error('[Finance.Currency]: Failed to retrieve the currencies from the API: %s', response.text)
+        log.error('[Finance.Currency]: Failed to retrieve the currencies from the API: %s\nContext: %s', response.text, url)
         raise FailedExchangeAPIRequest("Failed to retrieve the currencies from the API.")
 
     def _get_exchange_rates_from_api(self) -> dict:
