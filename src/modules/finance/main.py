@@ -1,4 +1,5 @@
 """This module is responsible for initializing and combining all financial submodules into common entry points."""
+import threading
 from logger import log
 from .exceptions import WrongVaultConfiguration
 from .currency import Currency
@@ -72,8 +73,23 @@ class Finance:
             if field not in self.configuration:
                 log.error('[Finance] The field %s is required for the finance module.', field)
                 return False
-
+        for item in self.configuration:
+            if self.configuration[item] is None:
+                log.error('[Finance] The field %s is required for the finance module.', item)
+                return False
         return True
+
+    def threads(self) -> None:
+        """
+        The method starts the threads for the finance module.
+
+        Returns:
+            None
+        """
+        log.info('[Finance] Starting the threads for the finance module.')
+        currency_thread = threading.Thread(target=self.currency.watcher)
+
+        currency_thread.start()
 
     def widget(self) -> bool:
         """

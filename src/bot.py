@@ -74,7 +74,7 @@ def bot_callback_query_handler(call: tg.callback_query, access_result: dict) -> 
     """
     log.info('[Bot.callback_query_handler]: Processing button %s for user %s...', call.data, call.message.chat.id)
     alias = None
-    if call.data == "Finance:income":
+    if call.data == "Finance: Income":
         alias = 'help_for_finance_income'
         method = finance_income_entry
     else:
@@ -85,7 +85,7 @@ def bot_callback_query_handler(call: tg.callback_query, access_result: dict) -> 
     bot.register_next_step_handler(call.message, method, help_message)
 
 
-@users.access_control(flow='authz', role_id=ROLES_MAP['Finance:income'])
+@users.access_control(flow='authz', role_id=ROLES_MAP['Finance: Income'])
 def finance_income_entry(message: tg.telegram_types.Message, help_message: tg.telegram_types.Message, access_result: dict) -> None:
     """
     Processes the finance income entry command.
@@ -156,10 +156,16 @@ def main():
     Returns:
         None
     """
+    # Run threads of submodules
+    finance.threads()
+
     # Thread for export metrics
+    # WILL BE MOVED INTO THE METRICS CLASS
     threads = threading.enumerate()
     thread_metrics = threading.Thread(target=metrics.run, args=(threads,), name="MetricsThread")
     thread_metrics.start()
+    # WILL BE MOVED INTO THE METRICS CLASS
+
     # Run bot
     while True:
         try:
