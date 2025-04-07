@@ -96,7 +96,7 @@ def finance_income_entry(message: tg.telegram_types.Message, help_message: tg.te
         access_result (dict): The dictionary containing the access result. Propagated from the access_control decorator.
     """
     log.info('[Bot.finance_income_entry]: Processing finance income message for user %s...', message.chat.id)
-    log.debug('[Bot.finance_income_entry]: Access result: %s\nMessage:%s', access_result)
+    log.debug('[Bot.finance_income_entry]: Access result: %s\nMessage:%s', access_result, message.text)
     payload = {}
     cleanup_message = True
     mapper = {1: 'name', 2: 'description', 3: 'category', 4: 'currency', 5: 'amount'}
