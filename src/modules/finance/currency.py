@@ -167,6 +167,7 @@ class Currency():
         log.info('[Finance.Currency]: Running the watcher for the background task...')
         while True:
             currency_cache = self.get_currency()
+            log.debug('[Finance.Currency]: Currency cache: %s', currency_cache)
             if not currency_cache:
                 self.update_currency_cache()
             elif currency_cache and (datetime.now() - currency_cache.get('last_update')).seconds > self.frequency * 3600:
