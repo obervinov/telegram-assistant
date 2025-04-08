@@ -51,7 +51,7 @@ class Currency():
         self.app_id = app_id
         self.database = database
         self.api_url = kwargs.get('api_url', 'https://openexchangerates.org/api')
-        self.frequency = kwargs.get('frequency', 24)
+        self.frequency = kwargs.get('frequency', 48) * 3600
         self.base_currency = kwargs.get('base_currency', 'USD')
         self.timeout = kwargs.get('request_timeout', 10)
         self.headers = {'accept': 'application/json'}
@@ -170,7 +170,9 @@ class Currency():
             log.debug('[Finance.Currency]: Currency cache: %s', currency_cache)
             if not currency_cache:
                 self.update_currency_cache()
-            elif currency_cache and (datetime.now() - currency_cache.get('last_update')).seconds > self.frequency * 3600:
-                self.update_currency_cache()
+            elif currency_cache:
+                last_update = min(currency_cache, key=lambda x: x['last_update'])['last_update']
+                if (datetime.now() - last_update).seconds > self.frequency:
+                    self.update_currency_cache()
             log.info('[Finance.Currency]: Currency module finished successfully.')
             time.sleep(60)
