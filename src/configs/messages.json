@@ -17,7 +17,7 @@
             "args": [":warning:"]
         },
         "help_for_finance_income": {
-            "text": "<b>{0} MANAGE FINANCE INCOME</b>\n\nSupported categories:\n1. <b>Salary</b> - regular and unchanged\n(format) <code>name, description, category, currency, amount</code>\n2. <b>CoinBox</b> - completely rewritable value every time the amount is changed\n(format) <code>name, description, category, currency, amount</code>\n3. <b>Deposit</b> - automatically calculated value based on the deposit amount and interest rate\n(format) <code>name, description, category, currency, amount, start date, end date, interest rate</code>\n\n<i>To continue, enter the type of income (one at a time)</i>",
+            "text": "<b>{0} MANAGE FINANCE INCOME</b>\n\nSupported categories:\n1. <b>Salary</b> - regular and unchanged\n<code>name, description, category, currency, amount</code>\n2. <b>CoinBox</b> - completely rewritable value every time the amount is changed\n<code>name, description, category, currency, amount</code>\n3. <b>Deposit</b> - automatically calculated value based on the deposit amount and interest rate\n<code>name, description, category, currency, amount, start date, end date, interest rate</code>\n\n<i>To continue, enter the type of income (one at a time)</i>",
             "args": [":dollar_banknote:"]
         },
         "wrong_input": {

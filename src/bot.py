@@ -99,7 +99,7 @@ def finance_income_entry(message: tg.telegram_types.Message, help_message: tg.te
     log.debug('[Bot.finance_income_entry]: Access result: %s\nMessage:%s', access_result, message.text)
     payload = {}
     cleanup_message = True
-    mapper = {1: 'name', 2: 'description', 3: 'category', 4: 'currency', 5: 'amount'}
+    mapper = {0: 'name', 1: 'description', 2: 'category', 3: 'currency', 4: 'amount'}
     input_data = message.text.split(', ')
 
     if len(input_data) < len(mapper):

@@ -174,5 +174,5 @@ class Currency():
                 last_update = min(currency_cache, key=lambda x: x['last_update'])['last_update']
                 if (datetime.now() - last_update).seconds > self.frequency:
                     self.update_currency_cache()
-            log.info('[Finance.Currency]: Currency module finished successfully.')
+            log.info('[Finance.Currency]: Watcher is sleeping for %s seconds...', self.frequency)
             time.sleep(60)
