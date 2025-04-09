@@ -100,6 +100,7 @@ def finance_income_entry(message: tg.telegram_types.Message, help_message: tg.te
     payload = {}
     cleanup_message = True
     mapper = {0: 'name', 1: 'description', 2: 'category', 3: 'currency', 4: 'amount'}
+    extra_mapper = {5: 'start_date', 6: 'expiration_date', 7: 'interest_rate', 8: 'tax'}
     input_data = message.text.split(', ')
 
     if len(input_data) < len(mapper):
@@ -121,7 +122,7 @@ def finance_income_entry(message: tg.telegram_types.Message, help_message: tg.te
             if index in mapper:
                 payload[mapper[index]] = item.strip()
             else:
-                extra_data[mapper[index]] = item.strip()
+                extra_data[extra_mapper[index]] = item.strip()
         payload['extra_data'] = extra_data
 
     _ = finance.income.add(user_id=message.chat.id, **payload)
