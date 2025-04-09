@@ -1,0 +1,68 @@
+
+# Operations for pytest
+# Allow read access to retrieve the token using approle
+path "auth/token/lookup" {
+  capabilities = ["read"]
+}
+
+# Operations for pytest
+# Allow updating capabilities for token revocation after creating and testing approle
+path "auth/token/revoke" {
+  capabilities = ["update"]
+}
+
+# Operations for the module
+# Enable read access for self-lookup with tokens
+path "auth/token/lookup-self" {
+  capabilities = ["read"]
+}
+
+# Operations for pytest
+# Allow read, create or update operations on the pytest path
+path "sys/mounts/pytest" {
+  capabilities = ["read", "create", "update"]
+}
+
+# Operations for pytest
+# Allow reading database credentials for a role 
+path "pytest-database/creds/pytest" {
+  capabilities = ["read"]
+}
+
+# Operations for pytest
+# Allow reading database credentials for a role 
+path "pytest/config" {
+  capabilities = ["read", "list", "update"]
+}
+
+# Operations for pytest
+# Allow reading database credentials for a role 
+path "pytest/data/configuration/*" {
+  capabilities = ["create", "read", "update", "list"]
+}
+
+
+###############################################################
+
+
+# Operations for the module
+# Read and update namespace configuration
+path "telegram-assistant/config" {
+  capabilities = ["read", "list", "update"]
+}
+
+# Operations for the module
+# Work with secret application data
+path "telegram-assistant/data/configuration/*" {
+  capabilities = ["create", "read", "update", "list"]
+}
+
+# Allowed to read and list of user configurations
+path "telegram-assistant/metadata/configuration/users" {
+  capabilities = ["read", "list"]
+}
+
+# Allow reading database credentials for a role 
+path "database/creds/telegram-assistant"{
+  capabilities = ["read"]
+}

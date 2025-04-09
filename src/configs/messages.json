@@ -1,0 +1,28 @@
+{
+    "templates": {
+        "start_message": {
+            "text": "Hi, <b>{0}</b>({1})! {2}\nAccess for your account - allowed {3} <b>Choose the function you want to use:</b>",
+            "args": ["username", "userid", ":raised_hand:", ":unlocked:"]
+        },
+        "reject_message": {
+            "text": "Greetings to <b>{0}</b> ({1})! \nThis is a <b>private bot</b> and it looks like you don't have the necessary access rights {3}\nHave a nice day and bye!",
+            "args": ["username", "userid", ":raised_hand:"]
+        },
+        "permission_denied_message": {
+            "text": "{0} Sorry, you have not permissions for use this feature. Please, check you permission roles.\nMetadata:\n<code>userid: {1}</code>\n<code>username: {2}</code>",
+            "args": [":no_entry:", "userid", "username"]
+        },
+        "unknown_command": {
+            "text": "{0} Invalid button command. Please use inline keyboard.",
+            "args": [":warning:"]
+        },
+        "help_for_finance_income": {
+            "text": "<b>{0} MANAGE FINANCE INCOME</b>\n\nSupported categories:\n1. <b>Salary</b> - regular and unchanged\n<code>name, description, category, currency, amount</code>\n2. <b>CoinBox</b> - completely rewritable value every time the amount is changed\n<code>name, description, category, currency, amount</code>\n3. <b>Deposit</b> - automatically calculated value based on the deposit amount and interest rate\n<code>name, description, category, currency, amount, start date, end date, interest rate</code>\n\n<i>To continue, enter the type of income (one at a time)</i>",
+            "args": [":dollar_banknote:"]
+        },
+        "wrong_input": {
+            "text": "{0} Invalid input. Please check that the format matches the example in the auxiliary message.",
+            "args": [":warning:"]
+        }
+    }
+}
